@@ -1,0 +1,10 @@
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+<script src="../client/thunderpush.js"></script>
+
+<script type="text/javascript">
+Thunder.connect("key", ["test"], {log: true, user: 'somerandomid'});
+Thunder.listen(function(e) {
+    console.log(e.data);
+});
+</script>
