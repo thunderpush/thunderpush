@@ -1,0 +1,3 @@
+include setup.py README.rst MANIFEST.in LICENSE AUTHORS
+recursive-include examples *.html
+recursive-include client *.js
