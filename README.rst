@@ -18,7 +18,10 @@ Example of interacting with Thunderpush API using cURL::
 		-H "Content-Type: application/json" \
 		-H "X-Thunder-Secret-Key: secretkey" \
 		--data-ascii "\"Hello World!\"" \
-		http://localhost:8080/1.0.0/[API key]/channel/[channel]/
+		http://thunder.example.com/1.0.0/[API key]/channel/[channel]/
+
+All requests to the HTTP API must provide *X-Thunder-Secret-Key* header that
+should contain the private API key. 
 
 Sending a message to a channel
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
