@@ -40,6 +40,11 @@ class Messenger(object):
     def subsribe_user(self, user):
         self.user_count += 1
 
+        if user in self.users:
+            self.users[user.userid] += 1
+        else:
+            self.users[user.userid] = 1
+
     def subsribe_user_to_channel(self, user, channel):
         logger.debug("%s subscribed to %s." % (user.userid, channel,))
 
@@ -56,9 +61,16 @@ class Messenger(object):
                 pass
 
         self.user_count -= 1
+        self.users[user.userid] -= 1
 
     def get_user_count(self):
         return self.user_count
+
+    def is_user_online(self, user):
+        try:
+            return bool(self.users[user])
+        except KeyError:
+            return False
 
     def get_channel_user_count(self, channel):
         channel = self.channels.get(channel, None)

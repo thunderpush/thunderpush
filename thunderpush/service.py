@@ -6,7 +6,7 @@ import tornado.web
 from tornado import websocket, web
 from tornado.ioloop import IOLoop
 from sockjs.tornado import SockJSRouter, SockJSConnection
-from thunderpush.api import UserCountHandler, ChannelMessageHandler
+from thunderpush import api
 from thunderpush.messenger import Messenger
 from thunderpush.sortingstation import SortingStation
 
@@ -92,8 +92,9 @@ class ThunderSocketHandler(SockJSConnection):
 ThunderRouter = SockJSRouter(ThunderSocketHandler, "/connect")
 
 application = tornado.web.Application([
-    (r"/1\.0\.0/(?P<apikey>.+)/users/", UserCountHandler),
-    (r"/1\.0\.0/(?P<apikey>.+)/channels/(?P<channel>.+)/", ChannelMessageHandler),
+    (r"/1\.0\.0/(?P<apikey>.+)/users/", api.UserCountHandler),
+    (r"/1\.0\.0/(?P<apikey>.+)/users/(?P<user>.+)/", api.UserOnlineHandler),
+    (r"/1\.0\.0/(?P<apikey>.+)/channels/(?P<channel>.+)/", api.ChannelMessageHandler),
 ] + ThunderRouter.urls, debug=True)
 
 if __name__ == "__main__":

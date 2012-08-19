@@ -64,3 +64,17 @@ class UserCountHandler(ThunderApiHandler):
         messenger = kwargs['messenger']
 
         self.response({"status": "ok", "count": messenger.get_user_count()})
+
+class UserOnlineHandler(ThunderApiHandler):
+    """ Retrieves the number of users online. """
+
+    @is_authenticated
+    def get(self, *args, **kwargs):
+        messenger = kwargs['messenger']
+        user = kwargs['user']
+        
+        is_online = messenger.is_user_online(user)
+
+        self.response({
+            "status": "ok", "online": is_online
+        }, [404, 200][int(is_online)])
