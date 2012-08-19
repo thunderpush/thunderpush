@@ -22,15 +22,15 @@ Example of interacting with Thunderpush API using cURL::
 
 Sending a message to a channel::
 	
-	POST /1.0.0/[API key]/channels/[channel]
+	POST /1.0.0/[API key]/channels/[channel]/
 
 Getting number of users online::
 
-	GET /1.0.0/[API key]/users
+	GET /1.0.0/[API key]/users/
 
 Checking presence of a user::
 
-	GET /1.0.0/[API key]/users/[user id]
+	GET /1.0.0/[API key]/users/[user id]/
 
 Returns 200 or 404 depending on if the user is online or not.
 
