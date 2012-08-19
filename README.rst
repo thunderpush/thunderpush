@@ -113,6 +113,9 @@ For more examples of how to use Thunderpush, look into *examples/*.
 JavaScript client API
 =====================
 
+Connecting to the server
+^^^^^^^^^^^^^^^^^^^^^^^^
+
 ::
 	
 	Thunder.connect(server, apiKey, channels, options)
@@ -138,6 +141,9 @@ options
 
   user
     Set it to override the client generated user id.
+
+Listening for messages
+^^^^^^^^^^^^^^^^^^^^^^
 
 ::
 	
