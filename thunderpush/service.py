@@ -37,41 +37,57 @@ class ThunderSocketHandler(SockJSConnection):
         logger.debug("User %s has disconnected." % self.userid)
 
     def process_message(self, msg):
+        """
+        We assume that every client message comes in following format:
+        COMMAND argument1[:argument2[:argumentX]]
+        """
+
         tokens = msg.split(" ")
 
-        if tokens[0] == "CONNECT":
-            if self.connected:
-                logger.warning("User already connected.")
-                return
+        messages = {
+            'CONNECT': self.handle_connect,
+            'SUBSCRIBE': self.handle_subscribe
+        }
 
-            try:
-                self.userid, self.apikey = tokens[1].split(":")
-            except ValueError:
-                logger.warning("Invalid message syntax.")
+        try:
+            messages[tokens[0]](tokens[1])
+        except (KeyError, IndexError):
+            logger.warning("Received invalid message: %s." % msg)
 
-            messenger = ss.get_messenger_by_apikey(self.apikey)
+    def handle_connect(self, args):
+        if self.connected:
+            logger.warning("User already connected.")
+            return
 
-            if messenger:
-                messenger.subsribe_user(self)
-                self.connected = True
-            else:
-                logger.warning("Invalid API key.")
+        try:
+            self.userid, self.apikey = args.split(":")
+        except ValueError:
+            logger.warning("Invalid message syntax.")
 
-                # inform client that the key was not good
-                self.send("WRONGKEY")
-                self.close()
-        elif tokens[0] == "SUBSCRIBE":
-            if not self.connected:
-                logger.warning("User not connected.")
-                return
+        messenger = ss.get_messenger_by_apikey(self.apikey)
 
-            channels = tokens[1].split(":")
+        if messenger:
+            messenger.subsribe_user(self)
+            self.connected = True
+        else:
+            logger.warning("Invalid API key.")
+
+            # inform client that the key was not good
+            self.send("WRONGKEY")
+            self.close()
+
+    def handle_subscribe(self, args):
+        if not self.connected:
+            logger.warning("User not connected.")
+            return
+
+        channels = args.split(":")
+
+        if len(channels):
             messenger = ss.get_messenger_by_apikey(self.apikey)
                 
             for channel in channels:
                 messenger.subsribe_user_to_channel(self, channel)
-        else:
-            logger.warning("Received uncregonizable message: %s." % msg)
 
 ThunderRouter = SockJSRouter(ThunderSocketHandler, "/connect")
 
