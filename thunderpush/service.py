@@ -29,6 +29,7 @@ class ThunderSocketHandler(SockJSConnection):
         self.process_message(msg)
 
     def on_close(self):
+        ss = SortingStation.instance()
         messenger = ss.get_messenger_by_apikey(self.apikey)
 
         if messenger:
@@ -65,6 +66,7 @@ class ThunderSocketHandler(SockJSConnection):
             logger.warning("Invalid message syntax.")
             return
 
+        ss = SortingStation.instance()
         messenger = ss.get_messenger_by_apikey(self.apikey)
 
         if messenger:
@@ -85,6 +87,7 @@ class ThunderSocketHandler(SockJSConnection):
         channels = args.split(":")
 
         if len(channels):
+            ss = SortingStation.instance()
             messenger = ss.get_messenger_by_apikey(self.apikey)
                 
             for channel in channels:
