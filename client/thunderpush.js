@@ -1,20 +1,16 @@
 var Thunder = new function() {
-    this.apikey = '';
     this.channels = [];
-    this.reconnect_delays = [1000, 2500, 5000, 10000, 30000, 60000];
-    this.reconnect_tries = 0;
-    this.no_reconnect = false
     this.handlers = [];
-    this.user = 'randomname'; // TODO: save in cookie
+    
+    this.reconnect_delays = [1000, 2500, 5000, 10000, 30000, 60000];
+    
     this.options = {
         // verbose?
-        log: false,
-
-        // default address of thunderpush server
-        gateway: "http://localhost:8080/connect/",
+        log: false
     };
 
-    this.connect = function(apikey, channels, options) {
+    this.connect = function(server, apikey, channels, options) {
+        this.server = "http://" + server + "/connect";
         this.apikey = apikey;
         this.channels = channels;
 
@@ -44,7 +40,9 @@ var Thunder = new function() {
 
     this.makeConnection = function() {
         var that = this;
-        this.socket = new SockJS(this.options.gateway);
+
+        // make a connection
+        this.socket = new SockJS(this.server);
 
         this.socket.onopen = function() {
             that.log("Connection has been estabilished.");
