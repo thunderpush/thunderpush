@@ -32,7 +32,7 @@ class ThunderSocketHandler(SockJSConnection):
 
     def on_close(self):
         if self.connected:
-            self.messenger.unsubscribe_user(self)
+            self.messenger.unregister_user(self)
             self.messenger = None
 
         logger.debug("User %s has disconnected." % self.userid)
@@ -73,7 +73,7 @@ class ThunderSocketHandler(SockJSConnection):
         self.messenger = ss.get_messenger_by_apikey(self.apikey)
 
         if self.messenger:
-            self.messenger.subsribe_user(self)
+            self.messenger.register_user(self)
         else:
             logger.warning("Invalid API key.")
 

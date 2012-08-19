@@ -39,7 +39,7 @@ class Messenger(object):
 
         return len(users)
 
-    def subsribe_user(self, user):
+    def register_user(self, user):
         self.user_count += 1
         self.users.setdefault(user.userid, []).append(user)
 
@@ -50,7 +50,7 @@ class Messenger(object):
         logger.debug("User count in %s: %d." % 
             (channel, self.get_channel_user_count(channel)))
 
-    def unsubscribe_user(self, user):
+    def unregister_user(self, user):
         for name in self.channels.iterkeys():
             try:
                 self.channels[name].remove(user)
