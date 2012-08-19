@@ -21,14 +21,17 @@ Example of interacting with Thunderpush API using cURL::
 		http://localhost:8080/1.0.0/[API key]/channel/[channel]/
 
 Sending a message to a channel::
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	
 	POST /1.0.0/[API key]/channels/[channel]/
 
 Getting number of users online::
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 	GET /1.0.0/[API key]/users/
 
 Checking presence of a user::
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 	GET /1.0.0/[API key]/users/[user id]/
 
