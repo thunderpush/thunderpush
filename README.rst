@@ -108,7 +108,7 @@ This code is all you need to do to start receive messages pushed to the client
 from your Thunderpush server. As you can see, we instructed Thunder client
 to display logs, which can be helpful for debugging your application.
 
-For more examples of how to use Thunderpush, look into *examples/*.
+For more examples of how to use Thunderpush, look into `examples <https://github.com/kjagiello/thunderpush/tree/master/examples>`_.
 
 JavaScript client API
 =====================
