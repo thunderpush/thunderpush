@@ -20,13 +20,26 @@ def is_authenticated(f):
 
         if not messenger or apisecret != messenger.apisecret:  
             self.error("Wrong API key/secret.", 401)
-
             return
 
         # pass messenger instance to handler
         kwargs['messenger'] = messenger
 
         f(self, *args, **kwargs)
+
+    return run_check
+
+def is_json(f):
+    """ Used to check if the body of the request is valid JSON. """
+
+    def run_check(self, *args, **kwargs):
+        try:
+            json.loads(self.request.body)
+            f(self, *args, **kwargs)
+        except ValueError:
+            self.error("Request body is not valid JSON.", 400)
+            return
+
     return run_check
 
 class ThunderApiHandler(tornado.web.RequestHandler):
@@ -44,8 +57,9 @@ class ThunderApiHandler(tornado.web.RequestHandler):
 
 class ChannelHandler(ThunderApiHandler):
     @is_authenticated
+    @is_json
     def post(self, *args, **kwargs):
-        """ Sends messages to specified channel. """
+        """ Sends messages to a channel. """
 
         messenger = kwargs['messenger']
         channel = kwargs['channel']
@@ -89,8 +103,9 @@ class UserHandler(ThunderApiHandler):
         self.response({"online": is_online}, response_code)
 
     @is_authenticated
+    @is_json
     def post(self, *args, **kwargs):
-        """ Retrieves the number of users online. """
+        """ Sends a message to a user. """
 
         messenger = kwargs['messenger']
         user = kwargs['user']
