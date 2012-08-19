@@ -29,11 +29,8 @@ class ThunderSocketHandler(SockJSConnection):
         self.process_message(msg)
 
     def on_close(self):
-        ss = SortingStation.instance()
-        messenger = ss.get_messenger_by_apikey(self.apikey)
-
-        if messenger:
-            messenger.unsubscribe_user(self)
+        if self.connected:
+            self.messenger.unsubscribe_user(self)
 
         logger.debug("User %s has disconnected." % self.userid)
 
@@ -66,11 +63,14 @@ class ThunderSocketHandler(SockJSConnection):
             logger.warning("Invalid message syntax.")
             return
 
+        # get singleton instance of SortingStation
         ss = SortingStation.instance()
-        messenger = ss.get_messenger_by_apikey(self.apikey)
 
-        if messenger:
-            messenger.subsribe_user(self)
+        # get and store the messenger object for given apikey
+        self.messenger = ss.get_messenger_by_apikey(self.apikey)
+
+        if self.messenger:
+            self.messenger.subsribe_user(self)
             self.connected = True
         else:
             logger.warning("Invalid API key.")
@@ -87,11 +87,8 @@ class ThunderSocketHandler(SockJSConnection):
         channels = args.split(":")
 
         if len(channels):
-            ss = SortingStation.instance()
-            messenger = ss.get_messenger_by_apikey(self.apikey)
-                
             for channel in channels:
-                messenger.subsribe_user_to_channel(self, channel)
+                self.messenger.subsribe_user_to_channel(self, channel)
 
 ThunderRouter = SockJSRouter(ThunderSocketHandler, "/connect")
 
