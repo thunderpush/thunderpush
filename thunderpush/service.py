@@ -63,6 +63,7 @@ class ThunderSocketHandler(SockJSConnection):
             self.userid, self.apikey = args.split(":")
         except ValueError:
             logger.warning("Invalid message syntax.")
+            return
 
         messenger = ss.get_messenger_by_apikey(self.apikey)
 
