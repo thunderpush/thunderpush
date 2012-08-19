@@ -34,8 +34,33 @@ Checking presence of a user::
 
 Returns 200 or 404 depending on if the user is online or not.
 
-JavaScript API
-==============
+JavaScript client
+=================
+
+In order to use provided by Thunderpush client, you need to include following
+lines on your webpage.
+
+::
+
+	<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+	<script src="thunderpush.js"></script>
+
+The only thing you have to do now is to make a connection to your Thunderpush
+server in following way::
+
+	<script type="text/javascript">
+	Thunder.connect("thunder.example.com", "apikey", ["testchannel"], {log: true});
+	Thunder.listen(function(e) { alert(e.data) });
+	</script>
+
+This code is all you need to do to start receive messages pushed to the client
+from your Thunderpush server. As you can see, we instructed Thunder client
+to display logs, which can be helpful for debugging your application.
+
+For more examples of how to use Thunderpush, look into *examples/*.
+
+JavaScript client API
+=====================
 
 ::
 	
@@ -57,7 +82,8 @@ options
   Object with optional settings you may pass to Thunder:
 
   log
-    Set it to true if you want activate verbose mode.
+    Set it to true if you want to activate verbose mode. This will turn on
+    SockJS logs as well.
 
   user
     Set it to override the client generated user id.
