@@ -44,7 +44,11 @@ def run_app():
         settings.HOST, settings.PORT)
 
     application.listen(settings.PORT, settings.HOST)
-    tornado.ioloop.IOLoop.instance().start()
+
+    try:
+        tornado.ioloop.IOLoop.instance().start()
+    except KeyboardInterrupt:
+        logger.info("Shutting down...")
 
 def parse_arguments(opts, args):
     for optname in ["PORT", "HOST", "VERBOSE", "DEBUG"]:
