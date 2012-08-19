@@ -13,16 +13,9 @@ def is_authenticated(f):
     """ Decorator used to check if a valid api key has been provided. """
 
     def run_check(self, *args, **kwargs):
-        try:
-            apisecret = self.request.headers['X-Thunder-Secret-Key']
-        except KeyError:
-            self.response({
-                "status": "error", "message": "Missing apisecret header."
-            }, 400)
-
-            return
-
         ss = SortingStation.instance()
+        
+        apisecret = self.request.headers.get('X-Thunder-Secret-Key', None)
         messenger = ss.get_messenger_by_apikey(kwargs['apikey'])
 
         if not messenger or messenger.apisecret != apisecret:  
