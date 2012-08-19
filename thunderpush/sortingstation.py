@@ -13,7 +13,6 @@ class SortingStation(object):
             raise Exception("SortingStation already initialized.")
 
         self.messengers_by_apikey = {}
-        self.messengers_by_apisecret = {}
 
         SortingStation._instance = self
 
@@ -25,11 +24,9 @@ class SortingStation(object):
         messenger = Messenger(apikey, apisecret)
 
         self.messengers_by_apikey[apikey] = messenger
-        self.messengers_by_apisecret[apisecret] = messenger
 
     def delete_messenger(self, messenger):
         del self.messengers_by_apikey[messenger.apikey]
-        del self.messengers_by_apisecret[messenger.apisecret]
 
     def get_messenger_by_apikey(self, apikey):
         return self.messengers_by_apikey.get(apikey, None)
