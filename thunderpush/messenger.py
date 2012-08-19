@@ -34,11 +34,7 @@ class Messenger(object):
 
     def subsribe_user(self, user):
         self.user_count += 1
-
-        if user in self.users:
-            self.users[user.userid] += 1
-        else:
-            self.users[user.userid] = 1
+        self.users.setdefault(user.userid, []).append(user)
 
     def subsribe_user_to_channel(self, user, channel):
         self.channels.setdefault(channel, []).append(user)
@@ -55,7 +51,7 @@ class Messenger(object):
                 pass
 
         self.user_count -= 1
-        self.users[user.userid] -= 1
+        self.users[user.userid].remove(user)
 
     def get_user_count(self):
         return self.user_count
