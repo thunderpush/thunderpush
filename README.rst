@@ -20,15 +20,14 @@ Usage
 
 ::
 	
-	Usage: thunderpush [options]
-	
+	Usage: runner.py [options] apikey apisecret
+
 	Options:
 		-h, --help            show this help message and exit
 		-p PORT, --port=PORT  binds server to custom port
 		-H HOST, --host=HOST  binds server to custom address
 		-v, --verbose         verbose mode
 		-d, --debug           debug mode (useful for development)
-
 
 Using the HTTP API
 ==================
