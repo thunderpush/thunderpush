@@ -4,5 +4,5 @@
 *.egg
 *.egg-info
 build
-.sublime-project
-.sublime-workspace
+*.sublime-project
+*.sublime-workspace
