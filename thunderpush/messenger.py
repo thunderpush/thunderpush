@@ -54,7 +54,7 @@ class Messenger(object):
         for name in self.channels.iterkeys():
             try:
                 self.channels[name].remove(user)
-            except (KeyError, ValueError):
+            except ValueError:
                 pass
 
         self.user_count -= 1
