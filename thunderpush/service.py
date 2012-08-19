@@ -21,7 +21,9 @@ logger.setLevel(logging.DEBUG)
 class ThunderSocketHandler(SockJSConnection):
     def on_open(self, info):
         logger.debug("New connection opened.")
-        self.connected = False
+
+        # no messenger object yet, client needs issue CONNECT command first
+        self.messenger = None
 
     def on_message(self, msg):
         logger.debug("Got message: %s" % msg)
@@ -31,6 +33,7 @@ class ThunderSocketHandler(SockJSConnection):
     def on_close(self):
         if self.connected:
             self.messenger.unsubscribe_user(self)
+            self.messenger = None
 
         logger.debug("User %s has disconnected." % self.userid)
 
@@ -71,7 +74,6 @@ class ThunderSocketHandler(SockJSConnection):
 
         if self.messenger:
             self.messenger.subsribe_user(self)
-            self.connected = True
         else:
             logger.warning("Invalid API key.")
 
@@ -89,6 +91,10 @@ class ThunderSocketHandler(SockJSConnection):
         if len(channels):
             for channel in channels:
                 self.messenger.subsribe_user_to_channel(self, channel)
+
+    @property
+    def connected(self):
+        return bool(self.messenger)
 
 ThunderRouter = SockJSRouter(ThunderSocketHandler, "/connect")
 
