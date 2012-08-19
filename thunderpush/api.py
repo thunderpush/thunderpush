@@ -14,11 +14,11 @@ def is_authenticated(f):
 
     def run_check(self, *args, **kwargs):
         ss = SortingStation.instance()
-        
+
         apisecret = self.request.headers.get('X-Thunder-Secret-Key', None)
         messenger = ss.get_messenger_by_apikey(kwargs['apikey'])
 
-        if not messenger or messenger.apisecret != apisecret:  
+        if not messenger or apisecret != messenger.apisecret:  
             self.response({
                 "status": "error", "message": "Wrong API key/secret."
             }, 401)
@@ -69,11 +69,11 @@ class UserCountHandler(ThunderApiHandler):
 
         self.response({"status": "ok", "count": messenger.get_user_count()})
 
-class UserOnlineHandler(ThunderApiHandler):
-    """ Retrieves the number of users online. """
-
+class UserHandler(ThunderApiHandler):
     @is_authenticated
     def get(self, *args, **kwargs):
+        """ Retrieves the number of users online. """
+
         messenger = kwargs['messenger']
         user = kwargs['user']
         
@@ -82,3 +82,15 @@ class UserOnlineHandler(ThunderApiHandler):
         self.response({
             "status": "ok", "online": is_online
         }, [404, 200][int(is_online)])
+
+    @is_authenticated
+    def post(self, *args, **kwargs):
+        """ Retrieves the number of users online. """
+
+        messenger = kwargs['messenger']
+        user = kwargs['user']
+
+        count = messenger.send_to_user(user, self.request.body)
+        self.response({"status": "ok", "count": count})
+
+        logger.debug("Message has been sent to %d users." % count)

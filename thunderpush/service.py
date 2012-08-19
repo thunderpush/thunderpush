@@ -94,7 +94,7 @@ ThunderRouter = SockJSRouter(ThunderSocketHandler, "/connect")
 
 application = tornado.web.Application([
     (r"/1\.0\.0/(?P<apikey>.+)/users/", api.UserCountHandler),
-    (r"/1\.0\.0/(?P<apikey>.+)/users/(?P<user>.+)/", api.UserOnlineHandler),
+    (r"/1\.0\.0/(?P<apikey>.+)/users/(?P<user>.+)/", api.UserHandler),
     (r"/1\.0\.0/(?P<apikey>.+)/channels/(?P<channel>.+)/", api.ChannelHandler),
 ] + ThunderRouter.urls, debug=True)
 
