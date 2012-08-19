@@ -10,7 +10,6 @@ except ImportError:
     import simplejson as json 
 
 logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
 
 class ThunderSocketHandler(SockJSConnection):
     def on_open(self, info):
