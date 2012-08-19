@@ -3,3 +3,4 @@
 *.pyo
 *.egg
 *.egg-info
+build
