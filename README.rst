@@ -51,7 +51,8 @@ Sending a message to a channel
 
 	POST /1.0.0/[API key]/channels/[channel]/
 
-Message should be sent as the body of the request.
+Message should be sent as the body of the request. Only valid JSON body
+will be accepted.
 
 Getting number of users online
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -67,7 +68,7 @@ Checking presence of a user
 
 	GET /1.0.0/[API key]/users/[user id]/
 
-Returns 200 or 404 depending on if the user is online or not.
+Returns 200 or 404 code depending on if the user is online or not.
 
 Sending a message to a user
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -76,7 +77,8 @@ Sending a message to a user
 
 	POST /1.0.0/[API key]/users/[user id]/
 
-Message should be sent as the body of the request.
+Message should be sent as the body of the request. Only valid JSON body
+will be accepted.
 
 Retrieving list of users in a channel
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
