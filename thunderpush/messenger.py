@@ -21,16 +21,11 @@ class Messenger(object):
         Returns a count of messages sent
         """
 
-        try:
-            channel = self.channels[channel]
-        except KeyError:
-            return 0
+        users = self.channels.get(channel, [])
+        count = len(users)
 
-        count = 0
-
-        for user in channel:
+        for user in users:
             user.send(message)
-            count += 1
 
         return count
 
