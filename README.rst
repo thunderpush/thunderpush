@@ -55,3 +55,11 @@ options
 
   user
     Set it to override the client generated user id.
+
+::
+	
+	Thunder.listen(handler)
+
+Registers callback function that will receive incomming messages. You can
+register as many handlers you want. Handler function should accept
+one argument which is the message itself.
