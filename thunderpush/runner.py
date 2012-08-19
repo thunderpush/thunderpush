@@ -37,8 +37,8 @@ def run_app():
 
     ss = SortingStation()
 
-    # TODO: this should be moved somewhere else
-    ss.create_messenger("key", "secretkey")
+    # Single-client only at the moment.
+    ss.create_messenger(settings.APIKEY, settings.APISECRET)
 
     logger.info("Starting Thunderpush server at %s:%d",
         settings.HOST, settings.PORT)
@@ -53,8 +53,17 @@ def parse_arguments(opts, args):
         if not value is None:
             setattr(settings, optname, value)
 
+    settings.APIKEY = args[0]
+    settings.APISECRET = args[1]
+
+def validate_arguments(parser, opts, args):
+    if len(args) != 2:
+        parser.error("incorrect number of arguments")  
+
 def main():
-    parser = optparse.OptionParser()
+    usage = "usage: %prog [options] apikey apisecret"
+    parser = optparse.OptionParser(usage=usage)
+
     parser.add_option('-p', '--port', 
         default=settings.PORT, 
         help='binds server to custom port', 
@@ -77,10 +86,9 @@ def main():
 
     opts, args = parser.parse_args()
 
+    validate_arguments(parser, opts, args)
     parse_arguments(opts, args)
     run_app()
-
-    
 
 if __name__ == "__main__":
     main()
