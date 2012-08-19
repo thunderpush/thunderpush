@@ -24,7 +24,7 @@ Sending a message to a channel
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ::
-	
+
 	POST /1.0.0/[API key]/channels/[channel]/
 
 Getting number of users online
@@ -42,6 +42,13 @@ Checking presence of a user
 	GET /1.0.0/[API key]/users/[user id]/
 
 Returns 200 or 404 depending on if the user is online or not.
+
+Retrieving list of users in a channel
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+	GET /1.0.0/[API key]/channels/[channel]/
 
 JavaScript client
 =================
