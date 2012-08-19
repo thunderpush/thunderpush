@@ -80,3 +80,6 @@ class Messenger(object):
         else:
             logger.debug("Channel %s not found." % (channel,))
             return 0
+
+    def get_users_in_channel(self, channel):
+        return self.channels.get(channel, [])

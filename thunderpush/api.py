@@ -43,11 +43,11 @@ class ThunderApiHandler(tornado.web.RequestHandler):
         self.write(json.dumps(data) + "\n")
         self.set_status(code)
 
-class ChannelMessageHandler(ThunderApiHandler):
-    """ Handler used for sending messages to channels. """
-
+class ChannelHandler(ThunderApiHandler):
     @is_authenticated
     def post(self, *args, **kwargs):
+        """ Sends messages to specified channel. """
+
         messenger = kwargs['messenger']
         channel = kwargs['channel']
 
@@ -55,6 +55,17 @@ class ChannelMessageHandler(ThunderApiHandler):
         self.response({"status": "ok", "count": count})
 
         logger.debug("Message has been sent to %d users." % count)
+
+    @is_authenticated
+    def get(self, *args, **kwargs):
+        """ Retrieves the number of users online. """
+
+        messenger = kwargs['messenger']
+        channel = kwargs['channel']
+        
+        users = [user.userid for user in messenger.get_users_in_channel(channel)]
+
+        self.response({"status": "ok", "users": users})
 
 class UserCountHandler(ThunderApiHandler):
     """ Retrieves the number of users online. """
