@@ -17,20 +17,27 @@ class Messenger(object):
 
     def send_to_channel(self, channel, message):
         """ 
-        Sends a message to given channel
-        Returns a count of messages sent
+        Sends a message to given channel.
+        Returns a count of messages sent.
         """
 
         users = self.get_users_in_channel(channel)
-        count = len(users)
+        return self._send_to_users(users, message)
 
+    def send_to_user(self, userid, message):
+        """ 
+        Sends a message to given user.
+        Returns a count of messages sent.
+        """
+
+        users = self.users.get(userid, [])
+        return self._send_to_users(users, message)
+
+    def _send_to_users(self, users, message):
         for user in users:
             user.send(message)
 
-        return count
-
-    def send_to_user(self, user, message):
-        pass
+        return len(users)
 
     def subsribe_user(self, user):
         self.user_count += 1
