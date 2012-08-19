@@ -26,8 +26,8 @@ var Thunder = new function() {
         var that = this;
 
         // add internal handler
-        this.handlers.push(function(e) {
-            if (e.data == 'WRONGKEY') {
+        this.handlers.push(function(data) {
+            if (data == 'WRONGKEY') {
                 that.no_reconnect = true;
             }
         });
@@ -69,7 +69,7 @@ var Thunder = new function() {
             }
 
             for (var i = 0; i < that.handlers.length; i++) {
-                that.handlers[i](e);
+                that.handlers[i](e.data);
             }
         }
 
