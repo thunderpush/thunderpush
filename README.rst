@@ -8,6 +8,13 @@ a Beaconpush (beaconpush.com) inspired HTTP API and client.
 This project is in early stage of development and should not be
 used in production environments.
 
+Install
+=======
+
+::
+	
+	pip install thunderpush
+
 Using the HTTP API
 ==================
 
