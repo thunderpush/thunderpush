@@ -19,9 +19,7 @@ def is_authenticated(f):
         messenger = ss.get_messenger_by_apikey(kwargs['apikey'])
 
         if not messenger or apisecret != messenger.apisecret:  
-            self.response({
-                "status": "error", "message": "Wrong API key/secret."
-            }, 401)
+            self.error("Wrong API key/secret.", 401)
 
             return
 
@@ -33,8 +31,16 @@ def is_authenticated(f):
 
 class ThunderApiHandler(tornado.web.RequestHandler):
     def response(self, data, code=200):
+        if code != 200:
+            # if something went wrong, we include returned HTTP code in the 
+            # JSON response
+            data["status"] = code
+
         self.write(json.dumps(data) + "\n")
         self.set_status(code)
+
+    def error(self, message, code=500):
+        self.response({"message": message}, code)
 
 class ChannelHandler(ThunderApiHandler):
     @is_authenticated
@@ -45,7 +51,7 @@ class ChannelHandler(ThunderApiHandler):
         channel = kwargs['channel']
 
         count = messenger.send_to_channel(channel, self.request.body)
-        self.response({"status": "ok", "count": count})
+        self.response({"count": count})
 
         logger.debug("Message has been sent to %d users." % count)
 
@@ -58,7 +64,7 @@ class ChannelHandler(ThunderApiHandler):
         
         users = [user.userid for user in messenger.get_users_in_channel(channel)]
 
-        self.response({"status": "ok", "users": users})
+        self.response({"users": users})
 
 class UserCountHandler(ThunderApiHandler):
     """ Retrieves the number of users online. """
@@ -67,7 +73,7 @@ class UserCountHandler(ThunderApiHandler):
     def get(self, *args, **kwargs):
         messenger = kwargs['messenger']
 
-        self.response({"status": "ok", "count": messenger.get_user_count()})
+        self.response({"count": messenger.get_user_count()})
 
 class UserHandler(ThunderApiHandler):
     @is_authenticated
@@ -78,10 +84,9 @@ class UserHandler(ThunderApiHandler):
         user = kwargs['user']
         
         is_online = messenger.is_user_online(user)
+        response_code = [404, 200][int(is_online)]
 
-        self.response({
-            "status": "ok", "online": is_online
-        }, [404, 200][int(is_online)])
+        self.response({"online": is_online}, response_code)
 
     @is_authenticated
     def post(self, *args, **kwargs):
@@ -91,6 +96,6 @@ class UserHandler(ThunderApiHandler):
         user = kwargs['user']
 
         count = messenger.send_to_user(user, self.request.body)
-        self.response({"status": "ok", "count": count})
+        self.response({"count": count})
 
         logger.debug("Message has been sent to %d users." % count)
