@@ -48,7 +48,7 @@ Checking presence of a user
 
 Returns 200 or 404 depending on if the user is online or not.
 
-Sending a message to an user
+Sending a message to a user
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ::
