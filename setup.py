@@ -9,7 +9,7 @@ install_requires = [
 
 setup(
     name='thunderpush',
-    version='0.9.1',
+    version='0.9.2',
     author='Krzysztof Jagiello',
     author_email='balonyo@gmail.com',
     description='Tornado and SockJS based, complete Web push solution.',
@@ -18,6 +18,7 @@ setup(
     install_requires=install_requires,
     license='BSD',
     include_package_data=True,
+    url='https://github.com/kjagiello/thunderpush',
     entry_points={
         'console_scripts': [
             'thunderpush = thunderpush.runner:main',
