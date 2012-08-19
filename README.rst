@@ -27,3 +27,31 @@ Sending a message to a channel::
 Getting number of users online::
 
 	GET /1.0.0/[API key]/users
+
+JavaScript API
+==============
+
+::
+	
+	Thunder.connect(server, apiKey, channels, options)
+
+Connects to the Thunderpush server and starts listening for incomming
+messages. 
+
+server
+  adress of your Thunderpush server
+
+apiKey
+  public api key
+
+channels
+  array of channels you want to subscribe to
+
+options
+  object with optional settings you may pass to Thunder:
+
+  log
+    Set it to true if you want activate verbose mode.
+
+  user
+    Set it to override the client generated user id.
