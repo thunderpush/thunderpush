@@ -21,7 +21,7 @@ class Messenger(object):
         Returns a count of messages sent
         """
 
-        users = self.channels.get(channel, [])
+        users = self.get_users_in_channel(channel)
         count = len(users)
 
         for user in users:
@@ -41,10 +41,9 @@ class Messenger(object):
             self.users[user.userid] = 1
 
     def subsribe_user_to_channel(self, user, channel):
-        logger.debug("%s subscribed to %s." % (user.userid, channel,))
-
         self.channels.setdefault(channel, []).append(user)
 
+        logger.debug("%s subscribed to %s." % (user.userid, channel,))
         logger.debug("User count in %s: %d." % 
             (channel, self.get_channel_user_count(channel)))
 
@@ -61,20 +60,11 @@ class Messenger(object):
     def get_user_count(self):
         return self.user_count
 
-    def is_user_online(self, user):
-        try:
-            return bool(self.users[user])
-        except KeyError:
-            return False
+    def is_user_online(self, userid):
+        return bool(self.users.get(userid, 0))
 
     def get_channel_user_count(self, channel):
-        channel = self.channels.get(channel, None)
-
-        if channel:
-            return len(channel)
-        else:
-            logger.debug("Channel %s not found." % (channel,))
-            return 0
+        return len(self.get_users_in_channel(channel))
 
     def get_users_in_channel(self, channel):
         return self.channels.get(channel, [])
