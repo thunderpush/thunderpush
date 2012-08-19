@@ -42,7 +42,8 @@ var Thunder = new function() {
         var that = this;
 
         // make a connection
-        this.socket = new SockJS(this.server);
+        this.socket = new SockJS(this.server, undefined, 
+            {'debug': this.options.log});
 
         this.socket.onopen = function() {
             that.log("Connection has been estabilished.");
