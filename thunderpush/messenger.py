@@ -45,7 +45,8 @@ class Messenger(object):
 
         self.channels.setdefault(channel, []).append(user)
 
-        logger.debug("User count in %s: %d." % (channel, self.get_channel_user_count(channel)))
+        logger.debug("User count in %s: %d." % 
+            (channel, self.get_channel_user_count(channel)))
 
     def unsubscribe_user(self, user):
         for name in self.channels.iterkeys():
