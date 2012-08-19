@@ -101,7 +101,7 @@ server in following way::
 
 	<script type="text/javascript">
 	Thunder.connect("thunder.example.com", "apikey", ["testchannel"], {log: true});
-	Thunder.listen(function(e) { alert(e.data) });
+	Thunder.listen(function(message) { alert(message); });
 	</script>
 
 This code is all you need to do to start receive messages pushed to the client
