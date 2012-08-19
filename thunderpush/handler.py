@@ -1,12 +1,6 @@
-import time
 import logging
-import json
-import tornado.ioloop
-import tornado.web
-from tornado import websocket, web
-from tornado.ioloop import IOLoop
-from sockjs.tornado import SockJSRouter, SockJSConnection
-from thunderpush import api
+
+from sockjs.tornado import SockJSConnection
 from thunderpush.messenger import Messenger
 from thunderpush.sortingstation import SortingStation
 
@@ -95,19 +89,4 @@ class ThunderSocketHandler(SockJSConnection):
     @property
     def connected(self):
         return bool(self.messenger)
-
-ThunderRouter = SockJSRouter(ThunderSocketHandler, "/connect")
-
-application = tornado.web.Application([
-    (r"/1\.0\.0/(?P<apikey>.+)/users/", api.UserCountHandler),
-    (r"/1\.0\.0/(?P<apikey>.+)/users/(?P<user>.+)/", api.UserHandler),
-    (r"/1\.0\.0/(?P<apikey>.+)/channels/(?P<channel>.+)/", api.ChannelHandler),
-] + ThunderRouter.urls, debug=True)
-
-if __name__ == "__main__":
-    ss = SortingStation()
-    ss.create_messenger("key", "secretkey")
-
-    application.listen(8080)
-    tornado.ioloop.IOLoop.instance().start()
     
