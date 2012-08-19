@@ -6,6 +6,5 @@
 Thunder.connect("key", ["test"], {log: true, user: 'somerandomid'});
 Thunder.listen(function(e) {
     console.log(e.data);
-    Thunder.socket.send("SUBSCRIBE")
 });
 </script>
