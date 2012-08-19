@@ -39,16 +39,16 @@ Connects to the Thunderpush server and starts listening for incomming
 messages. 
 
 server
-  adress of your Thunderpush server
+  Adress of your Thunderpush server.
 
 apiKey
-  public api key
+  Public api key.
 
 channels
-  array of channels you want to subscribe to
+  Array of channels you want to subscribe to.
 
 options
-  object with optional settings you may pass to Thunder:
+  Object with optional settings you may pass to Thunder:
 
   log
     Set it to true if you want activate verbose mode.
