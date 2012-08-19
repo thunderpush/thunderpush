@@ -3,7 +3,7 @@
 <script src="../client/thunderpush.js"></script>
 
 <script type="text/javascript">
-Thunder.connect("key", ["test"], {log: true, user: 'somerandomid'});
+Thunder.connect("localhost:8080", "key", ["test"], {log: true, user: 'somerandomid'});
 Thunder.listen(function(e) {
     console.log(e.data);
 });
