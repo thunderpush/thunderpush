@@ -55,17 +55,17 @@ class MessengerTestCase(unittest.TestCase):
         self.messenger.register_user(user2)
 
         self.assertEqual(self.messenger.get_user_count(), 2)
-        self.assertIn(userid, self.messenger.users)
+        self.assertTrue(userid in self.messenger.users)
         self.assertEqual(len(self.messenger.users[userid]), 2)
-        self.assertIn(user1, self.messenger.users[userid])
-        self.assertIn(user2, self.messenger.users[userid])
+        self.assertTrue(user1 in self.messenger.users[userid])
+        self.assertTrue(user2 in self.messenger.users[userid])
 
         self.messenger.unregister_user(user1)
 
         self.assertEqual(self.messenger.get_user_count(), 1)
-        self.assertIn(userid, self.messenger.users)
+        self.assertTrue(userid in self.messenger.users)
         self.assertEqual(len(self.messenger.users[userid]), 1)
-        self.assertIn(user2, self.messenger.users[userid])
+        self.assertTrue(user2 in self.messenger.users[userid])
 
     def test_subscribe(self):
         user1 = DummyThunderSocketHandler()
@@ -74,7 +74,7 @@ class MessengerTestCase(unittest.TestCase):
         self.messenger.subsribe_user_to_channel(user1, "test1")
 
         self.assertEqual(self.messenger.get_channel_user_count("test1"), 1)
-        self.assertIn(user1, self.messenger.get_users_in_channel("test1"))
+        self.assertTrue(user1 in self.messenger.get_users_in_channel("test1"))
 
         self.messenger.unregister_user(user1)
         self.assertEqual(self.messenger.get_channel_user_count("test1"), 0)
@@ -93,14 +93,14 @@ class MessengerTestCase(unittest.TestCase):
         self.messenger.subsribe_user_to_channel(user2, "test1")
 
         self.assertEqual(self.messenger.get_channel_user_count("test1"), 2)
-        self.assertIn(user1, self.messenger.get_users_in_channel("test1"))
-        self.assertIn(user2, self.messenger.get_users_in_channel("test1"))
+        self.assertTrue(user1 in self.messenger.get_users_in_channel("test1"))
+        self.assertTrue(user2 in self.messenger.get_users_in_channel("test1"))
 
         self.messenger.unregister_user(user1)
 
         self.assertEqual(self.messenger.get_channel_user_count("test1"), 1)
         self.assertNotIn(user1, self.messenger.get_users_in_channel("test1"))
-        self.assertIn(user2, self.messenger.get_users_in_channel("test1"))
+        self.assertTrue(user2 in self.messenger.get_users_in_channel("test1"))
 
     def test_send_to_channel(self):        
         count = self.messenger.send_to_channel("test1", "test message")
