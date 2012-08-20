@@ -28,7 +28,8 @@ class ThunderSocketHandler(SockJSConnection):
             self.messenger.unregister_user(self)
             self.messenger = None
 
-        logger.debug("User %s has disconnected." % self.userid)
+        logger.debug("User %s has disconnected." 
+            % getattr(self, "userid", None))
 
     def process_message(self, msg):
         """
