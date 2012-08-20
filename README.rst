@@ -57,6 +57,11 @@ to display logs, which can be helpful for debugging your application.
 
 For more examples of how to use Thunderpush, look into `examples <https://github.com/kjagiello/thunderpush/tree/master/examples>`_.
 
+Open-source libraries for talking to the HTTP API
+=================================================
+
+Python: `python-thunderclient <https://github.com/kjagiello/python-thunderclient>`_
+
 Using the HTTP API
 ==================
 
