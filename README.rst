@@ -67,7 +67,7 @@ Example of interacting with Thunderpush API using cURL::
 		-H "Content-Type: application/json" \
 		-H "X-Thunder-Secret-Key: secretkey" \
 		--data-ascii "\"Hello World!\"" \
-		http://thunder.example.com/1.0.0/[API key]/channel/[channel]/
+		http://thunder.example.com/api/1.0.0/[API key]/channel/[channel]/
 
 All requests to the HTTP API must provide *X-Thunder-Secret-Key* header that
 should contain the private API key. 
@@ -77,7 +77,7 @@ Sending a message to a channel
 
 ::
 
-	POST /1.0.0/[API key]/channels/[channel]/
+	POST /api/1.0.0/[API key]/channels/[channel]/
 
 Message should be sent as the body of the request. Only valid JSON body
 will be accepted.
@@ -87,14 +87,14 @@ Getting number of users online
 
 ::
 
-	GET /1.0.0/[API key]/users/
+	GET /api/1.0.0/[API key]/users/
 
 Checking presence of a user
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ::
 
-	GET /1.0.0/[API key]/users/[user id]/
+	GET /api/1.0.0/[API key]/users/[user id]/
 
 Returns 200 or 404 code depending on if the user is online or not.
 
@@ -103,7 +103,7 @@ Sending a message to a user
 
 ::
 
-	POST /1.0.0/[API key]/users/[user id]/
+	POST /api/1.0.0/[API key]/users/[user id]/
 
 Message should be sent as the body of the request. Only valid JSON body
 will be accepted.
@@ -113,7 +113,7 @@ Retrieving list of users in a channel
 
 ::
 
-	GET /1.0.0/[API key]/channels/[channel]/
+	GET /api/1.0.0/[API key]/channels/[channel]/
 
 JavaScript client API
 =====================

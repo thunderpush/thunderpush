@@ -22,11 +22,11 @@ def run_app():
 
     # api urls
     urls = [
-        (r"/1\.0\.0/(?P<apikey>.+)/users/",
+        (r"/api/1\.0\.0/(?P<apikey>.+)/users/",
             api.UserCountHandler),
-        (r"/1\.0\.0/(?P<apikey>.+)/users/(?P<user>.+)/",
+        (r"/api/1\.0\.0/(?P<apikey>.+)/users/(?P<user>.+)/",
             api.UserHandler),
-        (r"/1\.0\.0/(?P<apikey>.+)/channels/(?P<channel>.+)/", 
+        (r"/api/1\.0\.0/(?P<apikey>.+)/channels/(?P<channel>.+)/", 
             api.ChannelHandler),
     ]
 
