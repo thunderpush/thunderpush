@@ -98,9 +98,7 @@ class UserHandler(ThunderApiHandler):
         user = kwargs['user']
         
         is_online = messenger.is_user_online(user)
-        response_code = [404, 200][int(is_online)]
-
-        self.response({"online": is_online}, response_code)
+        self.response({"online": is_online}, 200)
 
     @is_authenticated
     @is_json
