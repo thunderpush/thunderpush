@@ -1,4 +1,5 @@
 import logging
+import re
 
 logger = logging.getLogger()
 
@@ -14,6 +15,10 @@ class Messenger(object):
         self.users = {}
         self.channels = {}
         self.user_count = 0
+
+    @staticmethod
+    def is_valid_channel_name(name):
+        return re.match("^[a-zA-Z0-9_\-\=\@\,\.\;]{1, 64}$", name) != None
 
     def send_to_channel(self, channel, message):
         """ 
@@ -44,11 +49,14 @@ class Messenger(object):
         self.users.setdefault(user.userid, []).append(user)
 
     def subsribe_user_to_channel(self, user, channel):
-        self.channels.setdefault(channel, []).append(user)
+        if self.is_valid_channel_name(channel):
+            self.channels.setdefault(channel, []).append(user)
 
-        logger.debug("%s subscribed to %s." % (user.userid, channel,))
-        logger.debug("User count in %s: %d." % 
-            (channel, self.get_channel_user_count(channel)))
+            logger.debug("%s subscribed to %s." % (user.userid, channel,))
+            logger.debug("User count in %s: %d." % 
+                (channel, self.get_channel_user_count(channel)))
+        else:
+            logger.debug("Invalid channel name %s." % channel)
 
     def unregister_user(self, user):
         for name in self.channels.iterkeys():
