@@ -96,8 +96,6 @@ Checking presence of a user
 
 	GET /api/1.0.0/[API key]/users/[user id]/
 
-Returns 200 or 404 code depending on if the user is online or not.
-
 Sending a message to a user
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
