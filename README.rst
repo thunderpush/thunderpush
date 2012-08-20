@@ -29,6 +29,31 @@ Usage
 		-v, --verbose         verbose mode
 		-d, --debug           debug mode (useful for development)
 
+JavaScript client
+=================
+
+In order to use provided by Thunderpush client, you need to include following
+lines on your webpage.
+
+::
+
+	<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+	<script src="thunderpush.js"></script>
+
+The only thing you have to do now is to make a connection to your Thunderpush
+server in following way::
+
+	<script type="text/javascript">
+	Thunder.connect("thunder.example.com", "apikey", ["testchannel"], {log: true});
+	Thunder.listen(function(message) { alert(message); });
+	</script>
+
+This code is all you need to do to start receive messages pushed to the client
+from your Thunderpush server. As you can see, we instructed Thunder client
+to display logs, which can be helpful for debugging your application.
+
+For more examples of how to use Thunderpush, look into `examples <https://github.com/kjagiello/thunderpush/tree/master/examples>`_.
+
 Using the HTTP API
 ==================
 
@@ -86,31 +111,6 @@ Retrieving list of users in a channel
 ::
 
 	GET /1.0.0/[API key]/channels/[channel]/
-
-JavaScript client
-=================
-
-In order to use provided by Thunderpush client, you need to include following
-lines on your webpage.
-
-::
-
-	<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
-	<script src="thunderpush.js"></script>
-
-The only thing you have to do now is to make a connection to your Thunderpush
-server in following way::
-
-	<script type="text/javascript">
-	Thunder.connect("thunder.example.com", "apikey", ["testchannel"], {log: true});
-	Thunder.listen(function(message) { alert(message); });
-	</script>
-
-This code is all you need to do to start receive messages pushed to the client
-from your Thunderpush server. As you can see, we instructed Thunder client
-to display logs, which can be helpful for debugging your application.
-
-For more examples of how to use Thunderpush, look into `examples <https://github.com/kjagiello/thunderpush/tree/master/examples>`_.
 
 JavaScript client API
 =====================
