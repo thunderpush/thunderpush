@@ -23,7 +23,7 @@ Usage
 
 ::
 	
-	Usage: runner.py [options] apikey apisecret
+	Usage: thunderpush [options] apikey apisecret
 
 	Options:
 		-h, --help            show this help message and exit
