@@ -19,6 +19,7 @@ setup(
     license='BSD',
     include_package_data=True,
     url='https://github.com/kjagiello/thunderpush',
+    test_suite='thunderpush.testsuite.suite',
     entry_points={
         'console_scripts': [
             'thunderpush = thunderpush.runner:main',
