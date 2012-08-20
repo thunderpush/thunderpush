@@ -2,8 +2,8 @@
 Thunderpush
 -----------
 
-.. image:: https://secure.travis-ci.org/kjagiello/thunderpush.png?branch=master
-	:target: http://travis-ci.org/kjagiello/thunderpush
+.. image:: https://secure.travis-ci.org/thunderpush/thunderpush.png?branch=master
+	:target: http://travis-ci.org/thunderpush/thunderpush
 
 Thunderpush is a Tornado and SockJS based push service. It provides
 a Beaconpush (beaconpush.com) inspired HTTP API and client.
@@ -55,12 +55,12 @@ This code is all you need to do to start receive messages pushed to the client
 from your Thunderpush server. As you can see, we instructed Thunder client
 to display logs, which can be helpful for debugging your application.
 
-For more examples of how to use Thunderpush, look into `examples <https://github.com/kjagiello/thunderpush/tree/master/examples>`_.
+For more examples of how to use Thunderpush, look into `examples <https://github.com/thunderpush/thunderpush/tree/master/examples>`_.
 
 Open-source libraries for talking to the HTTP API
 =================================================
 
-Python: `python-thunderclient <https://github.com/kjagiello/python-thunderclient>`_
+Python: `python-thunderclient <https://github.com/thunderpush/python-thunderclient>`_
 
 Using the HTTP API
 ==================
