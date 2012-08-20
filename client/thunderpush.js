@@ -53,7 +53,9 @@ var Thunder = new function() {
 
             // connect and subscribe to channels
             that.socket.send("CONNECT " + that.user + ":" + that.apikey);
-            that.socket.send("SUBSCRIBE " + that.channels.join(":"));
+
+            if (that.channels.length)
+                that.socket.send("SUBSCRIBE " + that.channels.join(":"));
         }
 
         this.socket.onmessage = function(e) {
