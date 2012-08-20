@@ -2,6 +2,9 @@
 Thunderpush
 -----------
 
+.. image:: https://secure.travis-ci.org/kjagiello/thunderpush.png?branch=master
+	:target: http://travis-ci.org/kjagiello/thunderpush
+
 Thunderpush is a Tornado and SockJS based push service. It provides
 a Beaconpush (beaconpush.com) inspired HTTP API and client.
 
