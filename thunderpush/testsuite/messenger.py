@@ -78,7 +78,7 @@ class MessengerTestCase(unittest.TestCase):
 
         self.messenger.unregister_user(user1)
         self.assertEqual(self.messenger.get_channel_user_count("test1"), 0)
-        self.assertNotIn(user1, self.messenger.get_users_in_channel("test1"))
+        self.assertFalse(user1 in self.messenger.get_users_in_channel("test1"))
 
     def test_multiple_subscribe(self):
         # testing multiple subscribtions from same userid
@@ -99,7 +99,7 @@ class MessengerTestCase(unittest.TestCase):
         self.messenger.unregister_user(user1)
 
         self.assertEqual(self.messenger.get_channel_user_count("test1"), 1)
-        self.assertNotIn(user1, self.messenger.get_users_in_channel("test1"))
+        self.assertFalse(user1 in self.messenger.get_users_in_channel("test1"))
         self.assertTrue(user2 in self.messenger.get_users_in_channel("test1"))
 
     def test_send_to_channel(self):        
