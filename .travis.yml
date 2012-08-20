@@ -5,4 +5,4 @@ python:
 install:
   - pip install . --use-mirrors
   - pip install -r requirements.txt --use-mirrors
-script: python -m unittest thunderpush.testsuite.suite
+script: python setup.py test
