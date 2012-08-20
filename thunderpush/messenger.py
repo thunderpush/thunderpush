@@ -18,7 +18,7 @@ class Messenger(object):
 
     @staticmethod
     def is_valid_channel_name(name):
-        return re.match("^[a-zA-Z0-9_\-\=\@\,\.\;]{1, 64}$", name) != None
+        return re.match("^[a-zA-Z0-9_\-\=\@\,\.\;]{1,64}$", name) != None
 
     def send_to_channel(self, channel, message):
         """ 
