@@ -59,14 +59,30 @@ class Messenger(object):
             logger.debug("Invalid channel name %s." % channel)
 
     def unregister_user(self, user):
+        channels_to_free = []
+
         for name in self.channels.iterkeys():
             try:
                 self.channels[name].remove(user)
+
+                # as we can't delete keys from the dict as we are iterating
+                # over it, we do it outside of this loop
+                if len(self.channels[name]) == 0:
+                    channels_to_free.append(name)
             except ValueError:
                 pass
 
-        self.user_count -= 1
+        # free up the memory used by empty channel index
+        for channel in channels_to_free:
+            del self.channels[channel]
+
         self.users[user.userid].remove(user)
+
+        # free up the memory used by empty user index
+        if len(self.users[user.userid]) == 0:
+            del self.users[user.userid]
+
+        self.user_count -= 1
 
     def get_user_count(self):
         return self.user_count

@@ -48,6 +48,14 @@ class MessengerTestCase(unittest.TestCase):
         self.messenger.unregister_user(user2)        
         self.assertEqual(self.messenger.get_user_count(), 0)
 
+    def test_user_unregister(self):
+        user1 = DummyThunderSocketHandler()
+
+        self.messenger.register_user(user1)
+        self.messenger.unregister_user(user1)
+
+        self.assertFalse(user1.userid in self.messenger.users)
+
     def test_multiple_connections(self):
         # testing multiple connections from same userid
         user1 = DummyThunderSocketHandler()
@@ -82,6 +90,7 @@ class MessengerTestCase(unittest.TestCase):
         self.messenger.unregister_user(user1)
         self.assertEqual(self.messenger.get_channel_user_count("test1"), 0)
         self.assertFalse(user1 in self.messenger.get_users_in_channel("test1"))
+        self.assertFalse("test1" in self.messenger.channels)
 
     def test_multiple_subscribe(self):
         # testing multiple subscribtions from same userid
