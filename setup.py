@@ -9,7 +9,7 @@ install_requires = [
 
 setup(
     name='thunderpush',
-    version='0.9.4',
+    version='0.9.5',
     author='Krzysztof Jagiello',
     author_email='balonyo@gmail.com',
     description='Tornado and SockJS based, complete Web push solution.',
