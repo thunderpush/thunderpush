@@ -13,6 +13,9 @@ class DummyThunderSocketHandler(object):
     def send(self, message):
         pass
 
+    def broadcast(self, users, message):
+        pass
+
 class MessengerTestCase(unittest.TestCase):
     def setUp(self):
         self.messenger = Messenger('apikey', 'apisecret')
