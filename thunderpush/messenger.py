@@ -39,8 +39,8 @@ class Messenger(object):
         return self._send_to_users(users, message)
 
     def _send_to_users(self, users, message):
-        for user in users:
-            user.send(message)
+        if users:
+            users[0].broadcast(users, message)
 
         return len(users)
 
