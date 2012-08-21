@@ -61,6 +61,7 @@ Open-source libraries for communicating with the HTTP API
 =========================================================
 
 Python: `python-thunderclient <https://github.com/thunderpush/python-thunderclient>`_
+
 PHP: `php-thunderclient <https://github.com/thunderpush/php-thunderclient>`_
 
 Using the HTTP API
