@@ -3,12 +3,13 @@ import re
 
 logger = logging.getLogger()
 
+
 class Messenger(object):
-    """ 
+    """
     Handles dispatching messages to Channels and Users
     for given client.
     """
-    
+
     def __init__(self, apikey, apisecret, *args, **kwargs):
         self.apikey = apikey
         self.apisecret = apisecret
@@ -18,10 +19,10 @@ class Messenger(object):
 
     @staticmethod
     def is_valid_channel_name(name):
-        return re.match("^[a-zA-Z0-9_\-\=\@\,\.\;]{1,64}$", name) != None
+        return not re.match("^[a-zA-Z0-9_\-\=\@\,\.\;]{1,64}$", name) is None
 
     def send_to_channel(self, channel, message):
-        """ 
+        """
         Sends a message to given channel.
         Returns a count of messages sent.
         """
@@ -30,7 +31,7 @@ class Messenger(object):
         return self._send_to_users(users, message)
 
     def send_to_user(self, userid, message):
-        """ 
+        """
         Sends a message to given user.
         Returns a count of messages sent.
         """
@@ -53,7 +54,7 @@ class Messenger(object):
             self.channels.setdefault(channel, []).append(user)
 
             logger.debug("%s subscribed to %s." % (user.userid, channel,))
-            logger.debug("User count in %s: %d." % 
+            logger.debug("User count in %s: %d." %
                 (channel, self.get_channel_user_count(channel)))
         else:
             logger.debug("Invalid channel name %s." % channel)

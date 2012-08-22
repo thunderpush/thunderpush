@@ -17,7 +17,7 @@ PORT = 8080
 # Host to which the server will be binded.
 HOST = ''
 
-# Debug mode? Tornado will restart the server whenever any project file 
+# Debug mode? Tornado will restart the server whenever any project file
 # change. Very useful for development.
 DEBUG = False
 

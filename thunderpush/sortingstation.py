@@ -3,6 +3,7 @@ from thunderpush.messenger import Messenger
 
 logger = logging.getLogger()
 
+
 class SortingStation(object):
     """ Handles dispatching messages to Messengers. """
 

@@ -11,6 +11,7 @@ import logging
 
 logger = logging.getLogger()
 
+
 def run_app():
     # configure logging level
     if settings.VERBOSE:
@@ -26,7 +27,7 @@ def run_app():
             api.UserCountHandler),
         (r"/api/1\.0\.0/(?P<apikey>.+)/users/(?P<user>.+)/",
             api.UserHandler),
-        (r"/api/1\.0\.0/(?P<apikey>.+)/channels/(?P<channel>.+)/", 
+        (r"/api/1\.0\.0/(?P<apikey>.+)/channels/(?P<channel>.+)/",
             api.ChannelHandler),
     ]
 
@@ -50,6 +51,7 @@ def run_app():
     except KeyboardInterrupt:
         logger.info("Shutting down...")
 
+
 def parse_arguments(opts, args):
     for optname in ["PORT", "HOST", "VERBOSE", "DEBUG"]:
         value = getattr(opts, optname, None)
@@ -60,31 +62,33 @@ def parse_arguments(opts, args):
     settings.APIKEY = args[0]
     settings.APISECRET = args[1]
 
+
 def validate_arguments(parser, opts, args):
     if len(args) != 2:
-        parser.error("incorrect number of arguments")  
+        parser.error("incorrect number of arguments")
+
 
 def main():
     usage = "usage: %prog [options] apikey apisecret"
     parser = optparse.OptionParser(usage=usage)
 
-    parser.add_option('-p', '--port', 
-        default=settings.PORT, 
-        help='binds server to custom port', 
+    parser.add_option('-p', '--port',
+        default=settings.PORT,
+        help='binds server to custom port',
         action="store", type="int", dest="PORT")
-    
-    parser.add_option('-H', '--host', 
-        default=settings.HOST, 
+
+    parser.add_option('-H', '--host',
+        default=settings.HOST,
         help='binds server to custom address',
         action="store", type="string", dest="HOST")
-    
-    parser.add_option('-v', '--verbose', 
-        default=settings.VERBOSE, 
+
+    parser.add_option('-v', '--verbose',
+        default=settings.VERBOSE,
         help='verbose mode',
         action="store_true", dest="VERBOSE")
 
-    parser.add_option('-d', '--debug', 
-        default=settings.DEBUG, 
+    parser.add_option('-d', '--debug',
+        default=settings.DEBUG,
         help='debug mode (useful for development)',
         action="store_true", dest="DEBUG")
 

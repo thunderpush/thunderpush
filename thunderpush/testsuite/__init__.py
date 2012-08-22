@@ -1,5 +1,6 @@
 import unittest
 
+
 def suite():
     from thunderpush.testsuite import messenger
 

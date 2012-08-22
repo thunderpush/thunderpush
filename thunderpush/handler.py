@@ -1,15 +1,15 @@
 import logging
 
 from sockjs.tornado import SockJSConnection
-from thunderpush.messenger import Messenger
 from thunderpush.sortingstation import SortingStation
 
 try:
-    import json
+    import simplejson as json
 except ImportError:
-    import simplejson as json 
+    import json # NOQA
 
 logger = logging.getLogger()
+
 
 class ThunderSocketHandler(SockJSConnection):
     def on_open(self, info):
@@ -28,7 +28,7 @@ class ThunderSocketHandler(SockJSConnection):
             self.messenger.unregister_user(self)
             self.messenger = None
 
-        logger.debug("User %s has disconnected." 
+        logger.debug("User %s has disconnected."
             % getattr(self, "userid", None))
 
     def process_message(self, msg):
@@ -91,4 +91,3 @@ class ThunderSocketHandler(SockJSConnection):
     @property
     def connected(self):
         return bool(self.messenger)
-    

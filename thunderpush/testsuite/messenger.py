@@ -1,6 +1,7 @@
 from thunderpush.messenger import Messenger
 import unittest
 
+
 class DummyThunderSocketHandler(object):
     dummyid = 1
 
@@ -15,6 +16,7 @@ class DummyThunderSocketHandler(object):
 
     def broadcast(self, users, message):
         pass
+
 
 class MessengerTestCase(unittest.TestCase):
     def setUp(self):
@@ -45,7 +47,7 @@ class MessengerTestCase(unittest.TestCase):
         self.messenger.unregister_user(user1)
         self.assertEqual(self.messenger.get_user_count(), 1)
 
-        self.messenger.unregister_user(user2)        
+        self.messenger.unregister_user(user2)
         self.assertEqual(self.messenger.get_user_count(), 0)
 
     def test_user_unregister(self):
@@ -96,7 +98,6 @@ class MessengerTestCase(unittest.TestCase):
         # testing multiple subscribtions from same userid
         user1 = DummyThunderSocketHandler()
         user2 = DummyThunderSocketHandler()
-        userid = user2.userid = user1.userid
 
         self.messenger.register_user(user1)
         self.messenger.register_user(user2)
@@ -114,7 +115,7 @@ class MessengerTestCase(unittest.TestCase):
         self.assertFalse(user1 in self.messenger.get_users_in_channel("test1"))
         self.assertTrue(user2 in self.messenger.get_users_in_channel("test1"))
 
-    def test_send_to_channel(self):        
+    def test_send_to_channel(self):
         count = self.messenger.send_to_channel("test1", "test message")
         self.assertEqual(count, 0)
 
@@ -126,7 +127,7 @@ class MessengerTestCase(unittest.TestCase):
         count = self.messenger.send_to_channel("test1", "test message")
         self.assertEqual(count, 1)
 
-    def test_send_to_user(self): 
+    def test_send_to_user(self):
         user1 = DummyThunderSocketHandler()
 
         self.messenger.register_user(user1)
@@ -148,6 +149,7 @@ class MessengerTestCase(unittest.TestCase):
         count = self.messenger.send_to_user(userid, "test message")
 
         self.assertEqual(count, 2)
+
 
 def suite():
     suite = unittest.TestSuite()
