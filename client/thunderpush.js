@@ -13,24 +13,17 @@ var Thunder = new function() {
         this.server = "http://" + server + "/connect";
         this.apikey = apikey;
         this.channels = channels;
+        this.reconnect_tries = 0;
 
         // merge options
         for (var attr in options) {
             this.options[attr] = options[attr];
         }
 
-        this.no_reconnect = false;
         this.user = this.options.user;
         this.makeConnection();
 
         var that = this;
-
-        // add internal handler
-        this.handlers.push(function(data) {
-            if (data == 'WRONGKEY') {
-                that.no_reconnect = true;
-            }
-        });
     };
 
     this.listen = function(handler) {
@@ -75,11 +68,12 @@ var Thunder = new function() {
             }
         }
 
-        this.socket.onclose = function() {
+        this.socket.onclose = function(e) {
             that.log("Connection has been lost.");
 
-            if (that.no_reconnect) {
-                that.log("Reconnect supressed.");
+            if (e.code == 9000) {
+                // received "key not good" close message
+                that.log("Reconnect supressed because of:", e);
                 return;
             }
 

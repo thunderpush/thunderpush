@@ -69,11 +69,7 @@ class ThunderSocketHandler(SockJSConnection):
         if self.messenger:
             self.messenger.register_user(self)
         else:
-            logger.warning("Invalid API key.")
-
-            # inform client that the key was not good
-            self.send("WRONGKEY")
-            self.close()
+            self.close(9000, "Invalid API key.")
 
     def handle_subscribe(self, args):
         if not self.connected:
@@ -85,6 +81,9 @@ class ThunderSocketHandler(SockJSConnection):
         if len(channels):
             for channel in channels:
                 self.messenger.subsribe_user_to_channel(self, channel)
+
+    def close(self, code=3000, message="Go away!"):
+        self.session.close(code, message)
 
     @property
     def connected(self):
