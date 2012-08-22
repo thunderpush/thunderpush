@@ -71,7 +71,7 @@ var Thunder = new function() {
         this.socket.onclose = function(e) {
             that.log("Connection has been lost.");
 
-            if (e.code == 9000) {
+            if (e.code == 9000 || e.code == 9001) {
                 // received "key not good" close message
                 that.log("Reconnect supressed because of:", e);
                 return;

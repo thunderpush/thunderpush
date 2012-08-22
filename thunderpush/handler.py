@@ -74,6 +74,9 @@ class ThunderSocketHandler(SockJSConnection):
     def handle_subscribe(self, args):
         if not self.connected:
             logger.warning("User not connected.")
+
+            # close the connection, the user issues commands in a wrong order
+            self.close(9001, "Subscribing before connecting.")
             return
 
         channels = args.split(":")
