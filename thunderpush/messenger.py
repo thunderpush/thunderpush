@@ -46,7 +46,6 @@ class Messenger(object):
         return len(users)
 
     def register_user(self, user):
-        self.user_count += 1
         self.users.setdefault(user.userid, []).append(user)
 
     def subsribe_user_to_channel(self, user, channel):
@@ -83,8 +82,6 @@ class Messenger(object):
         if len(self.users[user.userid]) == 0:
             del self.users[user.userid]
 
-        self.user_count -= 1
-
     def force_disconnect_user(self, userid):
         handlers = self.users.get(userid, [])
 
@@ -92,7 +89,10 @@ class Messenger(object):
             handler.force_disconnect()
 
     def get_user_count(self):
-        return self.user_count
+        return len(self.users)
+
+    def get_connections_count(self):
+        return sum([len(connections) for connections in self.users.values()])
 
     def is_user_online(self, userid):
         return bool(self.users.get(userid, 0))

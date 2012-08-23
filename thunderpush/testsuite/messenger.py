@@ -36,19 +36,22 @@ class MessengerTestCase(unittest.TestCase):
         self.messenger.unregister_user(user1)
         self.assertFalse(self.messenger.is_user_online(user1.userid))
 
-    def test_user_counter(self):
+    def test_counters(self):
         user1 = DummyThunderSocketHandler()
         user2 = DummyThunderSocketHandler()
 
         self.messenger.register_user(user1)
         self.messenger.register_user(user2)
         self.assertEqual(self.messenger.get_user_count(), 2)
+        self.assertEqual(self.messenger.get_connections_count(), 2)
 
         self.messenger.unregister_user(user1)
         self.assertEqual(self.messenger.get_user_count(), 1)
+        self.assertEqual(self.messenger.get_connections_count(), 1)
 
         self.messenger.unregister_user(user2)
         self.assertEqual(self.messenger.get_user_count(), 0)
+        self.assertEqual(self.messenger.get_connections_count(), 0)
 
     def test_user_unregister(self):
         user1 = DummyThunderSocketHandler()
@@ -67,7 +70,8 @@ class MessengerTestCase(unittest.TestCase):
         self.messenger.register_user(user1)
         self.messenger.register_user(user2)
 
-        self.assertEqual(self.messenger.get_user_count(), 2)
+        self.assertEqual(self.messenger.get_user_count(), 1)
+        self.assertEqual(self.messenger.get_connections_count(), 2)
         self.assertTrue(userid in self.messenger.users)
         self.assertEqual(len(self.messenger.users[userid]), 2)
         self.assertTrue(user1 in self.messenger.users[userid])
