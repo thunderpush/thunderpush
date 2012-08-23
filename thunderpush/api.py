@@ -119,3 +119,15 @@ class UserHandler(ThunderApiHandler):
         self.response({"count": count})
 
         logger.debug("Message has been sent to %d users." % count)
+
+    @is_authenticated
+    def delete(self, *args, **kwargs):
+        """ Forces logout of a user. """
+
+        messenger = kwargs['messenger']
+        user = kwargs['user']
+
+        messenger.force_disconnect_user(user)
+
+        # no response
+        self.set_status(204)

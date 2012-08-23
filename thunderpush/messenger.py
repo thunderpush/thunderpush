@@ -85,6 +85,12 @@ class Messenger(object):
 
         self.user_count -= 1
 
+    def force_disconnect_user(self, userid):
+        handlers = self.users.get(userid, [])
+
+        for handler in handlers:
+            handler.force_disconnect()
+
     def get_user_count(self):
         return self.user_count
 

@@ -31,6 +31,9 @@ class ThunderSocketHandler(SockJSConnection):
         logger.debug("User %s has disconnected."
             % getattr(self, "userid", None))
 
+    def force_disconnect(self):
+        self.close(9002, "Server closed the connection (intentionally).")
+
     def process_message(self, msg):
         """
         We assume that every client message comes in following format:

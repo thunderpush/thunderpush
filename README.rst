@@ -113,6 +113,15 @@ Sending a message to a user
 Message should be sent as the body of the request. Only valid JSON body
 will be accepted.
 
+Forcing logout of a user
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+	DELETE /api/1.0.0/[API key]/users/[user id]/
+
+Always returns 204 http code.
+
 Retrieving list of users in a channel
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
