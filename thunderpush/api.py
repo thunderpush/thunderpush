@@ -58,6 +58,14 @@ class ThunderApiHandler(tornado.web.RequestHandler):
     def error(self, message, code=500):
         self.response({"message": message}, code)
 
+    def prepare(self, *args, **kwargs):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "X-Thunder-Secret-Key")
+        self.set_header("Access-Control-Allow-Methods", "GET, POST, DELETE")
+
+    def options(self, *args, **kwargs):
+        pass
+
 
 class ChannelHandler(ThunderApiHandler):
     @is_authenticated
