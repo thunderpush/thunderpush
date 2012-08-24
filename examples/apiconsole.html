@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=utf-8 />
+	<title></title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+	<!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<script>
+	function getMethod() {
+		return $('#method-url').val().split(":")[0];
+	}
+
+	function getUrl() {
+		var url = $('#method-url').val().split(":")[1];
+		var apikey = $('#api-key').val();
+
+		url = url.replace('[API key]', apikey);
+
+		var inputs = url.match(/\[((?!API key).+)\]/g);
+
+		if (inputs) {
+			for (var i = 0; i < inputs.length; i++) {
+				var field = inputs[i];
+				var input = inputs[i].replace(/\[|\]/g, '');
+
+				url = url.replace(field, $('#input-' + slugify(input)).val());
+			}
+		}
+
+		return "http://" + $('#api-host').val() + url;
+	}
+
+	function validateRequest() {
+		if (!$('#api-host').val() || !$('#api-secretkey').val() || !$('#api-key').val()) {
+			$("#response-body").html('Validation failed.');
+			return false;
+		}
+
+		return true;
+	}
+
+	function onMethodUrlChange() {
+		var url = $('#method-url').val();
+
+		$('#method-url-input').html(url);
+		var html = $('#method-url-input').html().replace(/\[((?!API key).+)\]/, '<input type="text" class="inline slugify" value="\$1" />');
+		$('#method-url-input').html(html);
+
+		$('.slugify').each(function(){
+			$(this).removeClass('slugify');
+			$(this).attr('id', 'input-' + slugify($(this).val()));
+		});
+	}
+
+	function slugify(str) {
+		return str.replace(' ', '-');
+	}
+
+	$(document).ready(function(){
+		$('#send-button').click(function(event) {
+			if (!validateRequest()) return;
+			console.log(getMethod());
+
+			$.ajax({
+				type: getMethod(),
+				url: getUrl(),
+				data: $("#request-body").val(),
+				dataType: "text",
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("X-Thunder-Secret-Key", $('#api-secretkey').val());
+				},
+				success: function(msg) {
+					$("#response-body").html(msg);
+				},
+				error: function(xhr, textStatus, errorThrown) {
+					if (xhr.status >= 500) {
+						$("#response-body").html(xhr.status + " " + xhr.statusText + "<br>" + xhr.responseText);
+					} else {
+						$("#response-body").html(xhr.responseText);
+					}
+				}
+			});
+		});
+
+		$('#method-url').change(function(){
+			onMethodUrlChange();
+		});
+
+		onMethodUrlChange();
+	});
+	</script>
+	<style type="text/css">
+	input, select, textarea { display: block; width: 250px; }
+	.inline { display: inline-block;}
+	#method-url-input {
+		font-family: Courier New, serif;
+		background-color: #e6e6e6;
+		padding: 5px;
+		font-size: 12px;
+		display: inline-block;
+	}
+	</style>
+</head>
+<body>
+	<input type="text" id="api-host" value="" placeholder="localhost:8080" />
+	<input type="text" id="api-key" value="" placeholder="API key" />
+	<input type="password" id="api-secretkey" value="" placeholder="Secret API key" />
+	<div id="method-url-input"></div>
+	<select id="method-url">
+		<option value="POST:/api/1.0.0/[API key]/channels/[channel]/">Send message to channel</option>
+		<option value="GET:/api/1.0.0/[API key]/users/">Get online users count</option>
+		<option value="GET:/api/1.0.0/[API key]/users/[user id]/">Check if user is present</option>
+		<option value="POST:/api/1.0.0/[API key]/users/[user id]/">Send message to user</option>
+		<option value="DELETE:/api/1.0.0/[API key]/users/[user id]/">Force disconnect user</option>
+		<option value="GET:/api/1.0.0/[API key]/channels/[channel]/">Get users in channel</option>
+	</select>
+	<textarea id="request-body" rows="4"></textarea>
+	<div id="response-body"></div>
+	<input type="submit" id="send-button" value="Send" />
+</body>
+</html>
