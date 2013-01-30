@@ -1,3 +1,4 @@
+var isMSIE = /*@cc_on!@*/0;
 var Thunder = new function() {
     this.channels = [];
     this.handlers = [];
@@ -97,8 +98,12 @@ var Thunder = new function() {
                 console.log(arguments[0]);
             }
             else {
-                console.log.apply(console, 
-                    Array.prototype.slice.call(arguments));
+                if (isMSIE) {
+                    var log = Function.prototype.bind.call(console.log, console);
+                    log.apply(console, Array.prototype.slice.call(arguments));
+                } else {
+                    console.log.apply(console, Array.prototype.slice.call(arguments));
+                }
             }
         }
     };
