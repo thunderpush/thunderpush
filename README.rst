@@ -1,6 +1,5 @@
------------
-Thunderpush
------------
+.. image:: http://i.imgur.com/CgGL5eU.png  
+------
 
 .. image:: https://secure.travis-ci.org/thunderpush/thunderpush.png?branch=master
 	:target: http://travis-ci.org/thunderpush/thunderpush
