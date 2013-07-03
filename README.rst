@@ -63,6 +63,8 @@ Python: `python-thunderclient <https://github.com/thunderpush/python-thunderclie
 
 PHP: `php-thunderclient <https://github.com/thunderpush/php-thunderclient>`_
 
+Java: `java-thunderclient <https://github.com/Sim00n/java-thunderclient>`_
+
 Using the HTTP API
 ==================
 
