@@ -172,3 +172,13 @@ Listening for messages
 Registers callback function that will receive incomming messages. You can
 register as many handlers you want. Handler function should accept
 one argument which is the message itself.
+
+Getting high CPU usage?
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Before giving up on thunderpush, check it's logs and look for
+errors like this one `error: [Errno 24] Too many open files`. If you're seeing them,
+it means that you've reached the limit of open file descriptors on your system.
+The only thing you need to do is to raise the limit. Following SO answer will
+tell you how to do it: http://stackoverflow.com/a/4578356/250162 Then simply
+restart thunderpush, forget about the problem and get a cold one!
