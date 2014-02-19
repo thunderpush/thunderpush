@@ -7,9 +7,6 @@
 Thunderpush is a Tornado and SockJS based push service. It provides
 a Beaconpush (beaconpush.com) inspired HTTP API and client.
 
-This project is in early stage of development and should not be
-used in production environments.
-
 Install
 =======
 
