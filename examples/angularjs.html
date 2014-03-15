@@ -49,12 +49,14 @@
     <script src="http://cdn.sockjs.org/sockjs-0.3.4.min.js"></script>
     <script src="../client/thunderpush.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
-
-    <script type="text/javascript">
-      Thunder.connect("localhost:8081", "key", ["test"], {log: true, user: 'somerandomid'});
-    </script>
   </head>
   <body ng-app ng-controller="AppCtrl">
+    <div id="thunderpush-status">
+      <input ng-model="thunderHost" placeholder="localhost:8080">
+      <input ng-model="thunderKey" placeholder="key">
+      <input ng-model="thunderUserId" placeholder="user-id">
+      <button ng-click="connect()">Connect</button>
+    </div>
 
     <button ng-show="!isApiConsoleShown" ng-click="isApiConsoleShown = true" class="pull-right">Show API Console</button>
     <button ng-show="isApiConsoleShown" ng-click="isApiConsoleShown = false" class="pull-right">Hide API Console</button>
@@ -111,6 +113,11 @@
       function AppCtrl($scope) {
         ngScope = $scope;
 
+        $scope.status = 'Not Connected';
+        $scope.thunderHost = 'localhost:8080';
+        $scope.thunderKey = 'key';
+        $scope.thunderUserId = Math.floor(Math.random() * 1000 + 1000);
+
         $scope.log = [];
         $scope.channels = Thunder.channels;
 
@@ -138,6 +145,19 @@
         }
 
 
+        $scope.connect = function() {
+          var host = $scope.thunderHost;
+          var key = $scope.thunderKey;
+          var userId = $scope.thunderUserId;
+
+          if(host && key && userId) {
+            Thunder.connect(host, key, [], {log: true, user: userId});
+          }
+        }
+
+        $scope.$watch(Thunder, function(newVal, oldVal) {
+          console.log(newVal, oldVal);
+        });
 
       }
 
