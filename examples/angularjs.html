@@ -1,0 +1,166 @@
+<html>
+  <head>
+  
+    <style>
+      .pull-right {float:right;}
+      .clear-log {float:right; margin-top: 50px;}
+      body > div > div {
+        margin: 5px;
+        padding: 5px;
+        border-bottom: 1px solid #dfdfdf;
+      }
+      ul {
+        border-top: 2px solid #efefef;
+        padding: 10px;
+        list-style: none;
+      }
+      li {
+        border-bottom: 1px solid #efefef;
+        padding: 5px;
+      }
+      li span {
+        padding: 0 10px 0 0;
+      }
+      h2 { margin: 5px 0 5px 0;}
+
+      #client {
+        display: block;
+      }
+      #client.show-apiConsole {
+        width: 45%;
+        float:left;
+        padding-right: 15px;
+        margin-right: 15px;
+        border-right: 2px solid #aeaeae;
+      }
+      #apiConsole {
+        display: none;
+      }
+      #apiConsole.show-apiConsole {
+        display: block;
+      }
+      #apiConsole iframe{
+        width: 45%;
+        height: 100%;
+        border: none;
+      }
+    </style>
+
+    <script src="http://cdn.sockjs.org/sockjs-0.3.4.min.js"></script>
+    <script src="../client/thunderpush.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
+  </head>
+  <body ng-app ng-controller="AppCtrl">
+    <div id="thunderpush-status">
+      <input ng-model="thunderHost" placeholder="localhost:8080">
+      <input ng-model="thunderKey" placeholder="key">
+      <input ng-model="thunderUserId" placeholder="user-id">
+      <button ng-click="connect()">Connect</button>
+    </div>
+
+    <button ng-show="!isApiConsoleShown" ng-click="isApiConsoleShown = true" class="pull-right">Show API Console</button>
+    <button ng-show="isApiConsoleShown" ng-click="isApiConsoleShown = false" class="pull-right">Hide API Console</button>
+  
+    <div id="client" ng-class="{'show-apiConsole': isApiConsoleShown}">
+      <div>
+        <input ng-model="channelName" placeholder="myChannel">
+        <button ng-click="subscribe()">Subscribe</button>
+      </div>
+
+      <div>
+        <h2>Channels</h2>
+        <ul>
+          <li ng-repeat="channel in channels">
+            <button ng-click="unsubscribe(channel)" class="pull-right">&times;</button>
+            <span>{{channel}}</span>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <a href="#" ng-click="log = []" class="clear-log">Clear</a>
+        <h2>Log</h2>
+        <ul>
+          <li ng-repeat="entry in log">
+            <span style="">{{entry.ts}}</span><span>{{entry.evt}}</span><span>{{entry.msg}}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="apiConsole" ng-class="{'show-apiConsole': isApiConsoleShown}">
+      <iframe src="apiconsole.html"></iframe>
+    </div>
+
+    <script>
+      var ngScope = [];
+
+      function logEntry(evt, msg) {
+        ngScope.$apply(function() {
+          ngScope.log.push({
+            ts: new Date(),
+            evt: evt,
+            msg: msg
+          })
+        })
+      }
+
+      Thunder.listen(function(data) {
+        console.log(data);
+        logEntry('message', angular.toJson(data))
+      });
+
+      function AppCtrl($scope) {
+        ngScope = $scope;
+
+        $scope.status = 'Not Connected';
+        $scope.thunderHost = 'localhost:8080';
+        $scope.thunderKey = 'key';
+        $scope.thunderUserId = Math.floor(Math.random() * 1000 + 1000);
+
+        $scope.log = [];
+        $scope.channels = Thunder.channels;
+
+        $scope.subscribe = function() {
+          var channelName = String($scope.channelName);
+          $scope.channelName = '';
+          Thunder.subscribe(channelName,
+            function(tp, msg) {
+              $scope.channels = tp.channels;
+
+              logEntry('subscribe', msg);
+            }, function(tp, msg) {
+              logEntry('subscribe', msg);
+            });
+        }
+
+        $scope.unsubscribe = function(channelName) {
+          Thunder.unsubscribe(channelName,
+            function(tp, msg) {
+              $scope.channels = tp.channels;
+              logEntry('unsubscribe', msg);
+            }, function(tp, msg) {
+              logEntry('unsubscribe', msg);
+            });
+        }
+
+
+        $scope.connect = function() {
+          var host = $scope.thunderHost;
+          var key = $scope.thunderKey;
+          var userId = $scope.thunderUserId;
+
+          if(host && key && userId) {
+            Thunder.connect(host, key, [], {log: true, user: userId});
+          }
+        }
+
+        $scope.$watch(Thunder, function(newVal, oldVal) {
+          console.log(newVal, oldVal);
+        });
+
+      }
+
+    </script>
+  </body>
+</html
