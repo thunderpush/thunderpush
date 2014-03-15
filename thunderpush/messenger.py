@@ -48,15 +48,31 @@ class Messenger(object):
     def register_user(self, user):
         self.users.setdefault(user.userid, []).append(user)
 
-    def subsribe_user_to_channel(self, user, channel):
+    def subscribe_user_to_channel(self, user, channel):
         if self.is_valid_channel_name(channel):
             self.channels.setdefault(channel, []).append(user)
 
-            logger.debug("%s subscribed to %s." % (user.userid, channel,))
+            logger.debug("User %s subscribed to %s." % (user.userid, channel,))
             logger.debug("User count in %s: %d." %
                 (channel, self.get_channel_user_count(channel)))
         else:
             logger.debug("Invalid channel name %s." % channel)
+
+    def unsubscribe_user_from_channel(self, user, channel):
+        try:
+            self.channels[channel].remove(user)
+
+            # free up the memory used by empty channel index
+            if not len(self.channels[channel]):
+                del self.channels[channel]
+
+            logger.debug("%s unsubscribed from %s." % (user.userid, channel,))
+            logger.debug("User count in %s: %d." %
+                (channel, self.get_channel_user_count(channel)))
+        except KeyError:
+            logger.debug("Channel %s not found." % (channel,))
+        except ValueError:
+            logger.debug("User %s not found in %s." % (user.userid, channel,))
 
     def unregister_user(self, user):
         channels_to_free = []
@@ -67,7 +83,7 @@ class Messenger(object):
 
                 # as we can't delete keys from the dict as we are iterating
                 # over it, we do it outside of this loop
-                if len(self.channels[name]) == 0:
+                if not len(self.channels[name]):
                     channels_to_free.append(name)
             except ValueError:
                 pass

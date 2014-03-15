@@ -7,7 +7,7 @@ logger = logging.getLogger()
 try:
     import simplejson as json
 except ImportError:
-    import json # NOQA
+    import json
 
 
 def is_authenticated(f):
