@@ -182,7 +182,7 @@ var Thunder = new function() {
 
             try {
                 // try to parse the message as json
-                var json_data = JSON.parse(e.data);
+                var json_data = JSON.parse(e.data.payload);
                 e.data = json_data;
             }
             catch(e) {

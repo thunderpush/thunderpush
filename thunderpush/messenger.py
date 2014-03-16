@@ -27,8 +27,9 @@ class Messenger(object):
         Returns a count of messages sent.
         """
 
+        data = {'payload': message, 'channel': channel}
         users = self.get_users_in_channel(channel)
-        return self._send_to_users(users, message)
+        return self._send_to_users(users, data)
 
     def send_to_user(self, userid, message):
         """
@@ -36,8 +37,9 @@ class Messenger(object):
         Returns a count of messages sent.
         """
 
+        data = {'payload': message}
         users = self.users.get(userid, [])
-        return self._send_to_users(users, message)
+        return self._send_to_users(users, data)
 
     def _send_to_users(self, users, message):
         if users:
