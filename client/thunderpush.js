@@ -139,7 +139,7 @@ var Thunder = new function() {
                 message: 'Channel is not a string'
             };
 
-        if(this.readystate === this.socket.OPEN) {
+        if(this.socket.readyState === SockJS.OPEN) {
             if(_.indexOf(this.channels, channel) !== -1) {
                 typeof success === 'function' && success(this, 'Channel already subscribed');
                 return true;
@@ -154,7 +154,7 @@ var Thunder = new function() {
         typeof error === 'function' && error(this, 'Socket not open');
         throw {
             name: 'socket.status',
-            message: 'Socket not OPEN: ' . this.socket.readystate
+            message: 'Socket not OPEN: ' . this.socket.readyState
         };
     }
 
@@ -162,7 +162,7 @@ var Thunder = new function() {
      * Subscribe to channel
      */
     this.unsubscribe = function(channel, success, error) {
-        if(this.socket.readystate === this.socket.OPEN) {
+        if(this.socket.readyState === SockJS.OPEN) {
             this.socket.send("UNSUBSCRIBE " + channel);
 
             var pos = _.indexOf(this.channels, channel);
@@ -179,7 +179,7 @@ var Thunder = new function() {
             typeof error === 'function' && error(this, 'Socket not open');
             throw {
                 name: 'socket.status',
-                message: 'Socket not OPEN: ' . this.socket.readystate
+                message: 'Socket not OPEN: ' . this.socket.readyState
             };
         }
     }
