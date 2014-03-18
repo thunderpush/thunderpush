@@ -1,6 +1,6 @@
 from thunderpush.sortingstation import SortingStation
 from thunderpush.handler import ThunderSocketHandler
-from thunderpush import api
+from thunderpush import api, __version__
 from thunderpush import settings
 
 from sockjs.tornado import SockJSRouter
@@ -10,7 +10,6 @@ import tornado.ioloop
 import optparse
 import logging
 
-VERSION = '0.9.7'
 logger = logging.getLogger()
 
 
@@ -55,7 +54,7 @@ def run_app():
 
 
 def parse_arguments(opts, args):
-    for optname in ["PORT", "HOST", "VERBOSE", "DEBUG", "VERSION"]:
+    for optname in ["PORT", "HOST", "VERBOSE", "DEBUG"]:
         value = getattr(opts, optname, None)
 
         if not value is None:
@@ -72,7 +71,7 @@ def validate_arguments(parser, opts, args):
 
 def main():
     usage = "usage: %prog [options] apikey apisecret"
-    parser = optparse.OptionParser(usage=usage)
+    parser = optparse.OptionParser(usage=usage, version=__version__)
 
     parser.add_option('-p', '--port',
         default=settings.PORT,
@@ -94,16 +93,7 @@ def main():
         help='debug mode (useful for development)',
         action="store_true", dest="DEBUG")
 
-    parser.add_option('--version',
-        default=settings.VERSION,
-        help='version',
-        action="store_true", dest="VERSION")
-
     opts, args = parser.parse_args()
-
-    if opts.VERSION:
-        print 'thunderpush version ' + VERSION
-        sys.exit(2)
 
     validate_arguments(parser, opts, args)
     parse_arguments(opts, args)

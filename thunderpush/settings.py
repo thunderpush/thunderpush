@@ -23,6 +23,3 @@ DEBUG = False
 
 # This sets the logging level to DEBUG.
 VERBOSE = False
-
-# Version
-VERSION = False
