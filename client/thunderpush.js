@@ -7,7 +7,8 @@ var Thunder = new function() {
     
     this.options = {
         // verbose?
-        log: false
+        log: false,
+        retry: true
     };
 
 
@@ -79,6 +80,26 @@ var Thunder = new function() {
     };
     /** UnderscoreJS Functions **/
 
+    this.onSockOpen = function(cb) {
+        if(typeof cb === 'function')
+            this.onopen = cb;
+    }
+
+    this.onSockError = function(cb) {
+        if(typeof cb === 'function')
+            this.onerror = cb;
+    }
+
+    this.onSockClose = function(cb) {
+        if(typeof cb === 'function')
+            this.onclose = cb;
+    }
+
+    this.onSockMessage = function(cb) {
+        if(typeof cb === 'function')
+            this.onmessage = cb;
+    }
+
 
     this.connect = function(server, apikey, channels, options) {
         this.server = "http://" + server + "/connect";
@@ -97,6 +118,17 @@ var Thunder = new function() {
         var that = this;
     };
 
+    this.disconnect = function() {
+        var thunder = this;
+
+        this.socket.onclose = function(e) {
+            if(this.onclose) this.onclose.call(thunder, e);
+        }
+
+        if(this.socket.readyState === SockJS.OPEN) return this.socket.close();
+        return false;
+    }
+
     /**
      * Subscribe to channel
      */
@@ -107,7 +139,7 @@ var Thunder = new function() {
                 message: 'Channel is not a string'
             };
 
-        if(this.readystate === this.socket.OPEN) {
+        if(this.socket.readyState === SockJS.OPEN) {
             if(_.indexOf(this.channels, channel) !== -1) {
                 typeof success === 'function' && success(this, 'Channel already subscribed');
                 return true;
@@ -122,7 +154,7 @@ var Thunder = new function() {
         typeof error === 'function' && error(this, 'Socket not open');
         throw {
             name: 'socket.status',
-            message: 'Socket not OPEN: ' . this.socket.readystate
+            message: 'Socket not OPEN: ' . this.socket.readyState
         };
     }
 
@@ -130,7 +162,7 @@ var Thunder = new function() {
      * Subscribe to channel
      */
     this.unsubscribe = function(channel, success, error) {
-        if(this.socket.readystate === this.socket.OPEN) {
+        if(this.socket.readyState === SockJS.OPEN) {
             this.socket.send("UNSUBSCRIBE " + channel);
 
             var pos = _.indexOf(this.channels, channel);
@@ -147,7 +179,7 @@ var Thunder = new function() {
             typeof error === 'function' && error(this, 'Socket not open');
             throw {
                 name: 'socket.status',
-                message: 'Socket not OPEN: ' . this.socket.readystate
+                message: 'Socket not OPEN: ' . this.socket.readyState
             };
         }
     }
@@ -164,8 +196,10 @@ var Thunder = new function() {
         this.socket = new SockJS(this.server, undefined, 
             {'debug': this.options.log});
 
-        this.socket.onopen = function() {
+        this.socket.onopen = function(e) {
             that.log("Connection has been estabilished.");
+
+            if (that.onopen) that.onopen.call(that, e);
 
             // reset retries counter
             that.reconnect_tries = 0;
@@ -179,6 +213,8 @@ var Thunder = new function() {
 
         this.socket.onmessage = function(e) {
             that.log("Message has been received", e.data);
+
+            if (that.onmessage) that.onmessage.call(that, e);
 
             try {
                 // try to parse the message as json
@@ -194,8 +230,19 @@ var Thunder = new function() {
             }
         }
 
+        this.socket.onerror = function(e) {
+            if (that.onerror) that.onerror.call(that, e);
+        }
+
         this.socket.onclose = function(e) {
             that.log("Connection has been lost.");
+
+            if (that.onclose) that.onclose.call(that, e);
+
+            if (that.options.retry === false) {
+                that.log("Reconnect supressed because of retry option false");
+                return;
+            }
 
             if (e.code == 9000 || e.code == 9001 || e.code == 9002) {
                 // received "key not good" close message
