@@ -7,7 +7,8 @@ var Thunder = new function() {
     
     this.options = {
         // verbose?
-        log: false
+        log: false,
+        retry: true
     };
 
 
@@ -196,6 +197,11 @@ var Thunder = new function() {
 
         this.socket.onclose = function(e) {
             that.log("Connection has been lost.");
+
+            if (that.options.retry === false) {
+                that.log("Reconnect supressed because of retry option false");
+                return;
+            }
 
             if (e.code == 9000 || e.code == 9001 || e.code == 9002) {
                 // received "key not good" close message
