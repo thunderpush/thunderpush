@@ -11,7 +11,7 @@ To install Thunderpush server using pip::
 
     pip install thunderpush
 
-Running Thunderpush
+Starting the server
 ===================
 
 .. note:: Read :ref:`intro-install-deployment` for a recommended way to run Thunderpush in production environment.
@@ -33,7 +33,7 @@ To start Thunderpush on `localhost:8000` with `publickey` as apikey and `secret`
 
 .. _intro-install-deployment:
 
-Deploying Thunderpush to production
+Deploying to production
 ===================================
 
 When running an application in production, you want to make sure that it stays alive, even if a crash occurs.

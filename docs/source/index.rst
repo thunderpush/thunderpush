@@ -28,4 +28,15 @@ First steps
 :doc:`intro/quick-start`
     A quick guide to running Thunderpush.
 
+Reference
+=========
+
+.. toctree::
+    :hidden:
+
+    topics/server-api
+
+:doc:`topics/server-api`    
+    Learn how to use the HTTP API and see the list of all available commands.
+
 .. _section-basics:
