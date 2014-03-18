@@ -118,6 +118,17 @@ var Thunder = new function() {
         var that = this;
     };
 
+    this.disconnect = function() {
+        var thunder = this;
+
+        this.socket.onclose = function(e) {
+            if(this.onclose) this.onclose.call(thunder, e);
+        }
+
+        if(this.socket.readyState === SockJS.OPEN) return this.socket.close();
+        return false;
+    }
+
     /**
      * Subscribe to channel
      */
