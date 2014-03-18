@@ -23,9 +23,9 @@ First steps
 .. toctree::
    :hidden:
 
-   intro/install
+   intro/quick-start
 
-:doc:`intro/install`
-    A quick installation guide.
+:doc:`intro/quick-start`
+    A quick guide to running Thunderpush.
 
 .. _section-basics:
