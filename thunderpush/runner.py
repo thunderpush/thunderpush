@@ -5,10 +5,12 @@ from thunderpush import settings
 
 from sockjs.tornado import SockJSRouter
 
+import sys
 import tornado.ioloop
 import optparse
 import logging
 
+VERSION = '0.9.7'
 logger = logging.getLogger()
 
 
@@ -53,7 +55,7 @@ def run_app():
 
 
 def parse_arguments(opts, args):
-    for optname in ["PORT", "HOST", "VERBOSE", "DEBUG"]:
+    for optname in ["PORT", "HOST", "VERBOSE", "DEBUG", "VERSION"]:
         value = getattr(opts, optname, None)
 
         if not value is None:
@@ -92,7 +94,16 @@ def main():
         help='debug mode (useful for development)',
         action="store_true", dest="DEBUG")
 
+    parser.add_option('--version',
+        default=settings.VERSION,
+        help='version',
+        action="store_true", dest="VERSION")
+
     opts, args = parser.parse_args()
+
+    if opts.VERSION:
+        print 'thunderpush version ' + VERSION
+        sys.exit(2)
 
     validate_arguments(parser, opts, args)
     parse_arguments(opts, args)
