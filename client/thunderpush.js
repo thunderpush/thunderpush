@@ -80,6 +80,26 @@ var Thunder = new function() {
     };
     /** UnderscoreJS Functions **/
 
+    this.onSockOpen = function(cb) {
+        if(typeof cb === 'function')
+            this.onopen = cb;
+    }
+
+    this.onSockError = function(cb) {
+        if(typeof cb === 'function')
+            this.onerror = cb;
+    }
+
+    this.onSockClose = function(cb) {
+        if(typeof cb === 'function')
+            this.onclose = cb;
+    }
+
+    this.onSockMessage = function(cb) {
+        if(typeof cb === 'function')
+            this.onmessage = cb;
+    }
+
 
     this.connect = function(server, apikey, channels, options) {
         this.server = "http://" + server + "/connect";
@@ -165,8 +185,10 @@ var Thunder = new function() {
         this.socket = new SockJS(this.server, undefined, 
             {'debug': this.options.log});
 
-        this.socket.onopen = function() {
+        this.socket.onopen = function(e) {
             that.log("Connection has been estabilished.");
+
+            if (that.onopen) that.onopen.call(that, e);
 
             // reset retries counter
             that.reconnect_tries = 0;
@@ -180,6 +202,8 @@ var Thunder = new function() {
 
         this.socket.onmessage = function(e) {
             that.log("Message has been received", e.data);
+
+            if (that.onmessage) that.onmessage.call(that, e);
 
             try {
                 // try to parse the message as json
@@ -195,8 +219,14 @@ var Thunder = new function() {
             }
         }
 
+        this.socket.onerror = function(e) {
+            if (that.onerror) that.onerror.call(that, e);
+        }
+
         this.socket.onclose = function(e) {
             that.log("Connection has been lost.");
+
+            if (that.onclose) that.onclose.call(that, e);
 
             if (that.options.retry === false) {
                 that.log("Reconnect supressed because of retry option false");
