@@ -2,12 +2,40 @@
 <html>
 <head>
 	<meta charset=utf-8 />
-	<title></title>
+	<title>Thunderpush API Console</title>
+
+	<link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/bootstrap/3.1.1/css/bootstrap.css">
+	<style type="text/css">
+		#request-body, #response-body { 
+      position: relative;
+      width: 100%;
+      height: 100px;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+    #response-body { height: 300px; }
+    #method-url-input { font-family: monospace;}
+
+    input.inline {
+    	display: inline-block;
+    	margin: 0 10px;
+    	width: 250px;
+    }
+	</style>
+
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+	<script src="http://cdn.jsdelivr.net/json2/0.1/json2.min.js"></script>
+	<script src="http://cdn.jsdelivr.net/ace/1.1.3/noconflict/ace.js"></script>
+	<script src="http://cdn.jsdelivr.net/ace/1.1.3/noconflict/mode-json.js"></script>
 	<!--[if IE]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-	<script>
+
+	<script type="text/javascript">
+	var aceRequest, aceResponse;
+
 	function getMethod() {
 		return $('#method-url').val().split(":")[0];
 	}
@@ -32,9 +60,24 @@
 		return "http://" + $('#api-host').val() + url;
 	}
 
+	function getData() {
+		if(getMethod() === 'POST' || getMethod() === 'PUT')
+			return aceRequest.getSession().getValue();
+		return null;
+	}
+
 	function validateRequest() {
-		if (!$('#api-host').val() || !$('#api-secretkey').val() || !$('#api-key').val()) {
-			$("#response-body").html('Validation failed.');
+		var invalid;
+
+		if (!$('#api-host').val())
+			invalid = 'API host required';
+		if (!$('#api-secretkey').val())
+			invalid = 'API secret key required';
+		if (!$('#api-key').val())
+			invalid = 'API key required';
+
+		if(invalid) {
+			aceResponse.insert('Thunderpush validation failed: '+invalid);
 			return false;
 		}
 
@@ -44,8 +87,11 @@
 	function onMethodUrlChange() {
 		var url = $('#method-url').val();
 
+		if(url.match(/^(POST|PUT)/)) $('#request-body').show();
+		else $('#request-body').hide();
+
 		$('#method-url-input').html(url);
-		var html = $('#method-url-input').html().replace(/\[((?!API key).+)\]/, '<input type="text" class="inline slugify" value="\$1" />');
+		var html = $('#method-url-input').html().replace(/\[((?!API key).+)\]/, '<input type="text" class="form-control inline slugify" value="\$1" />');
 		$('#method-url-input').html(html);
 
 		$('.slugify').each(function(){
@@ -60,25 +106,31 @@
 
 	$(document).ready(function(){
 		$('#send-button').click(function(event) {
+			aceResponse.selectAll();
+			aceResponse.removeLines();
+
 			if (!validateRequest()) return;
-			console.log(getMethod());
+			console.log("Sending request", getMethod(), getUrl(), getData());
 
 			$.ajax({
 				type: getMethod(),
 				url: getUrl(),
-				data: $("#request-body").val(),
+				data: getData(),
 				dataType: "text",
 				beforeSend: function(xhr) {
 					xhr.setRequestHeader("X-Thunder-Secret-Key", $('#api-secretkey').val());
 				},
 				success: function(msg) {
-					$("#response-body").html(msg);
+					aceResponse.getSession().setMode("ace/mode/json");
+					msg = JSON.stringify(JSON.parse(msg), null, 4) 
+					aceResponse.insert(msg);
 				},
 				error: function(xhr, textStatus, errorThrown) {
+					aceResponse.getSession().setMode("ace/mode/text");
 					if (xhr.status >= 500) {
-						$("#response-body").html(xhr.status + " " + xhr.statusText + "<br>" + xhr.responseText);
+						aceResponse.insert(xhr.status + " " + xhr.statusText + "\n" + xhr.responseText);
 					} else {
-						$("#response-body").html(xhr.responseText);
+						aceResponse.insert(xhr.responseText);
 					}
 				}
 			});
@@ -91,33 +143,78 @@
 		onMethodUrlChange();
 	});
 	</script>
-	<style type="text/css">
-	input, select, textarea { display: block; width: 250px; }
-	.inline { display: inline-block;}
-	#method-url-input {
-		font-family: Courier New, serif;
-		background-color: #e6e6e6;
-		padding: 5px;
-		font-size: 12px;
-		display: inline-block;
-	}
-	</style>
 </head>
 <body>
-	<input type="text" id="api-host" value="" placeholder="localhost:8080" />
-	<input type="text" id="api-key" value="" placeholder="API key" />
-	<input type="password" id="api-secretkey" value="" placeholder="Secret API key" />
-	<div id="method-url-input"></div>
-	<select id="method-url">
-		<option value="POST:/api/1.0.0/[API key]/channels/[channel]/">Send message to channel</option>
-		<option value="GET:/api/1.0.0/[API key]/users/">Get online users count</option>
-		<option value="GET:/api/1.0.0/[API key]/users/[user id]/">Check if user is present</option>
-		<option value="POST:/api/1.0.0/[API key]/users/[user id]/">Send message to user</option>
-		<option value="DELETE:/api/1.0.0/[API key]/users/[user id]/">Force disconnect user</option>
-		<option value="GET:/api/1.0.0/[API key]/channels/[channel]/">Get users in channel</option>
-	</select>
-	<textarea id="request-body" rows="4"></textarea>
-	<div id="response-body"></div>
-	<input type="submit" id="send-button" value="Send" />
+	<div class="container-fluid">
+		<h2>API Console</h2>
+
+		<div class="row">
+			<div class="col-md-6">
+
+				<formrole="form">
+					<div class="row">
+						<div class="col-md-12">
+							<fieldset>
+								<legend>Connection</legend>
+								<div class="form-group">
+									<label class="sr-only" for="api-host">API Host</label>
+									<input type="text" id="api-host" class="form-control" value="" placeholder="API host (e.g. localhost:8080)">
+								</div>
+								<div class="form-group">
+									<label class="sr-only" for="api-key">API Key</label>
+									<input type="text" id="api-key" class="form-control" value="" placeholder="API Key">
+								</div>
+								<div class="form-group">
+									<label class="sr-only" for="api-secretkey">API Secret</label>
+									<input type="password" id="api-secretkey" class="form-control" value="" placeholder="API Secret Key">
+								</div>
+							</fieldset>
+							<br>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<select id="method-url" class="form-control">
+									<option value="POST:/api/1.0.0/[API key]/channels/[channel]/">Send message to channel</option>
+									<option value="GET:/api/1.0.0/[API key]/users/">Get online users count</option>
+									<option value="GET:/api/1.0.0/[API key]/users/[user id]/">Check if user is present</option>
+									<option value="POST:/api/1.0.0/[API key]/users/[user id]/">Send message to user</option>
+									<option value="DELETE:/api/1.0.0/[API key]/users/[user id]/">Force disconnect user</option>
+									<option value="GET:/api/1.0.0/[API key]/channels/[channel]/">Get users in channel</option>
+								</select>
+							</div>
+							<div class="well" id="method-url-input"></div>
+							<div class="form-group">
+								<div id="request-body"></div>
+							</div>
+
+							<button type="submit" class="btn btn-default" id="send-button">Send</button>
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<div class="col-md-6">
+				<legend>API Response</legend>
+				<div id="response-body"></div>
+			</div>
+		</div>
+
+	</div>
+
+	<script type="text/javascript">
+    var aceRequest = ace.edit("request-body");
+    aceRequest.setTheme("ace/theme/monokai");
+    aceRequest.getSession().setMode("ace/mode/json");
+    aceRequest.insert("{}");
+
+    var aceResponse = ace.edit("response-body");
+    aceResponse.setTheme("ace/theme/monokai");
+    aceResponse.setReadOnly(true);
+    aceResponse.getSession().setMode("ace/mode/text");
+
+	</script>
 </body>
 </html>
