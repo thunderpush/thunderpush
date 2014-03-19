@@ -5,6 +5,7 @@ install_requires = [
     'sockjs-tornado==0.0.4',
     'tornado==2.3',
     'wsgiref==0.1.2',
+    'argparse==1.2.1'
 ]
 
 setup(

@@ -7,7 +7,7 @@ from sockjs.tornado import SockJSRouter
 
 import sys
 import tornado.ioloop
-import optparse
+import argparse
 import logging
 
 logger = logging.getLogger()
@@ -53,50 +53,53 @@ def run_app():
         logger.info("Shutting down...")
 
 
-def parse_arguments(opts, args):
+def parse_arguments(args):
+    args = vars(args)
+
     for optname in ["PORT", "HOST", "VERBOSE", "DEBUG"]:
-        value = getattr(opts, optname, None)
+        value = args.get(optname, None)
 
         if not value is None:
             setattr(settings, optname, value)
 
-    settings.APIKEY = args[0]
-    settings.APISECRET = args[1]
-
-
-def validate_arguments(parser, opts, args):
-    if len(args) != 2:
-        parser.error("incorrect number of arguments")
+    settings.APIKEY = args['clientkey']
+    settings.APISECRET = args['apikey']
 
 
 def main():
-    usage = "usage: %prog [options] apikey apisecret"
-    parser = optparse.OptionParser(usage=usage, version=__version__)
+    parser = argparse.ArgumentParser()
 
-    parser.add_option('-p', '--port',
+    parser.add_argument('-p', '--port',
         default=settings.PORT,
         help='binds server to custom port',
-        action="store", type="int", dest="PORT")
+        action="store", type=int, dest="PORT")
 
-    parser.add_option('-H', '--host',
+    parser.add_argument('-H', '--host',
         default=settings.HOST,
         help='binds server to custom address',
-        action="store", type="string", dest="HOST")
+        action="store", type=str, dest="HOST")
 
-    parser.add_option('-v', '--verbose',
+    parser.add_argument('-v', '--verbose',
         default=settings.VERBOSE,
         help='verbose mode',
         action="store_true", dest="VERBOSE")
 
-    parser.add_option('-d', '--debug',
+    parser.add_argument('-d', '--debug',
         default=settings.DEBUG,
         help='debug mode (useful for development)',
         action="store_true", dest="DEBUG")
 
-    opts, args = parser.parse_args()
+    parser.add_argument('-V', '--version', 
+        action='version', version=__version__)
 
-    validate_arguments(parser, opts, args)
-    parse_arguments(opts, args)
+    parser.add_argument('clientkey',
+        help='client key')
+
+    parser.add_argument('apikey',
+        help='server API key')
+
+    args = parser.parse_args()
+    parse_arguments(args)
     run_app()
 
 if __name__ == "__main__":
