@@ -53,7 +53,7 @@ def run_app():
         logger.info("Shutting down...")
 
 
-def parse_arguments(args):
+def update_settings(args):
     args = vars(args)
 
     for optname in ["PORT", "HOST", "VERBOSE", "DEBUG"]:
@@ -66,7 +66,7 @@ def parse_arguments(args):
     settings.APISECRET = args['apikey']
 
 
-def main():
+def parse_args(args):
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-p', '--port',
@@ -98,8 +98,12 @@ def main():
     parser.add_argument('apikey',
         help='server API key')
 
-    args = parser.parse_args()
-    parse_arguments(args)
+    return parser.parse_args(args)
+
+
+def main():
+    args = parse_args(sys.argv[1:])
+    update_settings(args)
     run_app()
 
 if __name__ == "__main__":

@@ -20,7 +20,7 @@ setup(
     license='BSD',
     include_package_data=True,
     url='https://github.com/thunderpush/thunderpush',
-    test_suite='thunderpush.testsuite.suite',
+    test_suite='thunderpush.tests.suite',
     entry_points={
         'console_scripts': [
             'thunderpush = thunderpush.runner:main',
