@@ -2,7 +2,7 @@
 ------
 
 .. image:: https://badge.fury.io/py/thunderpush.png
-    :target: http://badge.fury.io/py/thunderpush
+	:target: http://badge.fury.io/py/thunderpush
 
 .. image:: https://secure.travis-ci.org/thunderpush/thunderpush.png?branch=master
 	:target: http://travis-ci.org/thunderpush/thunderpush
@@ -21,15 +21,20 @@ Usage
 =====
 
 ::
-	
-	Usage: thunderpush [options] apikey apisecret
 
-	Options:
-		-h, --help            show this help message and exit
-		-p PORT, --port=PORT  binds server to custom port
-		-H HOST, --host=HOST  binds server to custom address
-		-v, --verbose         verbose mode
-		-d, --debug           debug mode (useful for development)
+	usage: thunderpush [-h] [-p PORT] [-H HOST] [-v] [-d] [-V] clientkey apikey
+
+	positional arguments:
+	  clientkey             client key
+	  apikey                server API key
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  -p PORT, --port PORT  binds server to custom port
+	  -H HOST, --host HOST  binds server to custom address
+	  -v, --verbose         verbose mode
+	  -d, --debug           debug mode (useful for development)
+	  -V, --version         show program's version number and exit	
 
 JavaScript client
 =================
@@ -156,11 +161,11 @@ options
   Object with optional settings you may pass to Thunder:
 
   log
-    Set it to true if you want to activate verbose mode. This will turn on
-    SockJS logs as well.
+	Set it to true if you want to activate verbose mode. This will turn on
+	SockJS logs as well.
 
   user
-    Set it to override the client generated user id.
+	Set it to override the client generated user id.
 
 Listening for messages
 ^^^^^^^^^^^^^^^^^^^^^^

@@ -18,14 +18,19 @@ Starting the server
 
 Help message for Thunderpush::
 
-    Usage: thunderpush [options] apikey apisecret
+    usage: thunderpush [-h] [-p PORT] [-H HOST] [-v] [-d] [-V] clientkey apikey
 
-    Options:
-            -h, --help            show this help message and exit
-            -p PORT, --port=PORT  binds server to custom port
-            -H HOST, --host=HOST  binds server to custom address
-            -v, --verbose         verbose mode
-            -d, --debug           debug mode (useful for development)
+    positional arguments:
+      clientkey             client key
+      apikey                server API key
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -p PORT, --port PORT  binds server to custom port
+      -H HOST, --host HOST  binds server to custom address
+      -v, --verbose         verbose mode
+      -d, --debug           debug mode (useful for development)
+      -V, --version         show program's version number and exit
 
 To start Thunderpush on `localhost:8000` with `publickey` as apikey and `secret` as apisecret you would do following::
 
