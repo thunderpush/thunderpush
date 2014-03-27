@@ -70,7 +70,7 @@ PHP: `php-thunderclient <https://github.com/thunderpush/php-thunderclient>`_
 
 Java: `java-thunderclient <https://github.com/Sim00n/java-thunderclient>`_
 
-Java: `hubot-thunderclient <https://github.com/thunderpush/hubot-thunderpush>`_
+Hubot: `hubot-thunderpush <https://github.com/thunderpush/hubot-thunderpush>`_
 
 Using the HTTP API
 ==================
