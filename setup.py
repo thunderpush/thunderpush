@@ -2,8 +2,8 @@
 from setuptools import setup, find_packages
 
 install_requires = [
-    'sockjs-tornado==0.0.4',
-    'tornado==2.3',
+    'sockjs-tornado==1.0.0',
+    'tornado==3.2.2',
     'wsgiref==0.1.2',
     'argparse'
 ]
