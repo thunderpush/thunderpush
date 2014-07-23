@@ -54,6 +54,9 @@ class Messenger(object):
         if self.is_valid_channel_name(channel):
             self.channels.setdefault(channel, []).append(user)
 
+            self.send_to_channel("presence-" + channel,
+                {"action": "subscribe", "user": user.userid})
+
             logger.debug("User %s subscribed to %s." % (user.userid, channel,))
             logger.debug("User count in %s: %d." %
                 (channel, self.get_channel_user_count(channel)))
@@ -67,6 +70,9 @@ class Messenger(object):
             # free up the memory used by empty channel index
             if not len(self.channels[channel]):
                 del self.channels[channel]
+
+            self.send_to_channel("presence-" + channel,
+                {"action": "unsubscribe", "user": user.userid})
 
             logger.debug("%s unsubscribed from %s." % (user.userid, channel,))
             logger.debug("User count in %s: %d." %
@@ -82,6 +88,9 @@ class Messenger(object):
         for name in self.channels.iterkeys():
             try:
                 self.channels[name].remove(user)
+
+                self.send_to_channel("presence-" + name,
+                    {"action": "disconnected", "user": user.userid})
 
                 # as we can't delete keys from the dict as we are iterating
                 # over it, we do it outside of this loop
