@@ -197,7 +197,7 @@ var Thunder = new function() {
             {'debug': this.options.log});
 
         this.socket.onopen = function(e) {
-            that.log("Connection has been estabilished.");
+            that.log("Connection has been established.");
 
             if (that.onopen) that.onopen.call(that, e);
 
