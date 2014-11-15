@@ -56,7 +56,7 @@ class Messenger(object):
 
             logger.debug("User %s subscribed to %s." % (user.userid, channel,))
             logger.debug("User count in %s: %d." %
-                (channel, self.get_channel_user_count(channel)))
+                         (channel, self.get_channel_user_count(channel)))
         else:
             logger.debug("Invalid channel name %s." % channel)
 
@@ -65,12 +65,12 @@ class Messenger(object):
             self.channels[channel].remove(user)
 
             # free up the memory used by empty channel index
-            if not len(self.channels[channel]):
+            if self.channels[channel]:
                 del self.channels[channel]
 
             logger.debug("%s unsubscribed from %s." % (user.userid, channel,))
             logger.debug("User count in %s: %d." %
-                (channel, self.get_channel_user_count(channel)))
+                         (channel, self.get_channel_user_count(channel)))
         except KeyError:
             logger.debug("Channel %s not found." % (channel,))
         except ValueError:
@@ -85,7 +85,7 @@ class Messenger(object):
 
                 # as we can't delete keys from the dict as we are iterating
                 # over it, we do it outside of this loop
-                if not len(self.channels[name]):
+                if not self.channels[name]:
                     channels_to_free.append(name)
             except ValueError:
                 pass
@@ -97,7 +97,7 @@ class Messenger(object):
         self.users[user.userid].remove(user)
 
         # free up the memory used by empty user index
-        if len(self.users[user.userid]) == 0:
+        if not self.users[user.userid]:
             del self.users[user.userid]
 
     def force_disconnect_user(self, userid):
@@ -110,7 +110,7 @@ class Messenger(object):
         return len(self.users)
 
     def get_connections_count(self):
-        return sum([len(connections) for connections in self.users.values()])
+        return sum(len(connections) for connections in self.users.values())
 
     def is_user_online(self, userid):
         return bool(self.users.get(userid, 0))

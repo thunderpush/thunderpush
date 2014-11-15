@@ -88,8 +88,8 @@ class ChannelHandler(ThunderApiHandler):
         messenger = kwargs['messenger']
         channel = kwargs['channel']
 
-        users = \
-            [user.userid for user in messenger.get_users_in_channel(channel)]
+        users = [user.userid
+                 for user in messenger.get_users_in_channel(channel)]
 
         self.response({"users": users})
 

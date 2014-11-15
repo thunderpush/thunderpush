@@ -7,5 +7,5 @@ def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(test_messenger.MessengerTestCase))
     suite.addTest(unittest.makeSuite(test_cli.CLITestCase))
-    
+
     return suite

@@ -1,12 +1,6 @@
 import logging
-
 from sockjs.tornado import SockJSConnection
 from thunderpush.sortingstation import SortingStation
-
-try:
-    import simplejson as json
-except ImportError:
-    import json
 
 logger = logging.getLogger()
 
@@ -29,7 +23,7 @@ class ThunderSocketHandler(SockJSConnection):
             self.messenger = None
 
         logger.debug("User %s has disconnected."
-            % getattr(self, "userid", None))
+                     % getattr(self, "userid", None))
 
     def force_disconnect(self):
         self.close(9002, "Server closed the connection (intentionally).")

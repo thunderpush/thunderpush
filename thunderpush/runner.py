@@ -43,7 +43,7 @@ def run_app():
     ss.create_messenger(settings.APIKEY, settings.APISECRET)
 
     logger.info("Starting Thunderpush server at %s:%d",
-        settings.HOST, settings.PORT)
+                settings.HOST, settings.PORT)
 
     application.listen(settings.PORT, settings.HOST)
 
@@ -70,33 +70,33 @@ def parse_args(args):
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-p', '--port',
-        default=settings.PORT,
-        help='binds server to custom port',
-        action="store", type=int, dest="PORT")
+                        default=settings.PORT,
+                        help='binds server to custom port',
+                        action="store", type=int, dest="PORT")
 
     parser.add_argument('-H', '--host',
-        default=settings.HOST,
-        help='binds server to custom address',
-        action="store", type=str, dest="HOST")
+                        default=settings.HOST,
+                        help='binds server to custom address',
+                        action="store", type=str, dest="HOST")
 
     parser.add_argument('-v', '--verbose',
-        default=settings.VERBOSE,
-        help='verbose mode',
-        action="store_true", dest="VERBOSE")
+                        default=settings.VERBOSE,
+                        help='verbose mode',
+                        action="store_true", dest="VERBOSE")
 
     parser.add_argument('-d', '--debug',
-        default=settings.DEBUG,
-        help='debug mode (useful for development)',
-        action="store_true", dest="DEBUG")
+                        default=settings.DEBUG,
+                        help='debug mode (useful for development)',
+                        action="store_true", dest="DEBUG")
 
-    parser.add_argument('-V', '--version', 
-        action='version', version=__version__)
+    parser.add_argument('-V', '--version',
+                        action='version', version=__version__)
 
     parser.add_argument('clientkey',
-        help='client key')
+                        help='client key')
 
     parser.add_argument('apikey',
-        help='server API key')
+                        help='server API key')
 
     return parser.parse_args(args)
 
