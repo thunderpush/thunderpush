@@ -72,6 +72,8 @@ Java: `java-thunderclient <https://github.com/Sim00n/java-thunderclient>`_
 
 Hubot: `hubot-thunderpush <https://github.com/thunderpush/hubot-thunderpush>`_
 
+Ruby: `thunderpush-gem <https://github.com/welingtonsampaio/thunderpush-gem>`_
+
 Using the HTTP API
 ==================
 
