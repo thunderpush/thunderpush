@@ -93,6 +93,32 @@ class ChannelHandler(ThunderApiHandler):
 
         self.response({"users": users})
 
+class EventHandler(ThunderApiHandler):
+    @is_authenticated
+    @is_json
+    def post(self, *args, **kwargs):
+        """ Sends messages to a channel. """
+
+        messenger = kwargs['messenger']
+        event = kwargs['event']
+
+        try:
+            content_parsed = json.loads(self.request.body)
+            content_channels = content_parsed.get('channels')
+            del content_parsed['channels']
+            count = 0
+            if type(content_channels) is list:
+                for channel in content_channels:
+                    count += messenger.send_to_channel(channel, json.dumps(content_parsed), event)
+            else:
+                count += messenger.send_to_channel(content_channels, json.dumps(content_parsed), event)
+            self.response({"count": count})
+
+            logger.debug("Message has been sent to %d users." % count)
+        except KeyError:
+            self.error("Request has no channels.", 400)
+            return
+
 
 class UserCountHandler(ThunderApiHandler):
     """ Retrieves the number of users online. """

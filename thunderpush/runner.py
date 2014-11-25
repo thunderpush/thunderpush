@@ -30,6 +30,8 @@ def run_app():
             api.UserHandler),
         (r"/api/1\.0\.0/(?P<apikey>.+)/channels/(?P<channel>.+)/",
             api.ChannelHandler),
+        (r"/api/1\.0\.0/(?P<apikey>.+)/events/(?P<event>.+)/",
+            api.EventHandler),
     ]
 
     # include sockjs urls
