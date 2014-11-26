@@ -32,9 +32,9 @@ class Messenger(object):
         Returns a count of messages sent.
         """
 
+        data = {'payload': message, 'channel': channel}
         if event != '':
             data['event'] = event
-        data = {'payload': message, 'channel': channel}
         users = self.get_users_in_channel(channel)
         return self._send_to_users(users, data)
 
