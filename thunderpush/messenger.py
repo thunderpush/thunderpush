@@ -1,6 +1,11 @@
 import logging
 import re
 
+try:
+    import simplejson as json
+except ImportError:
+    import json
+
 logger = logging.getLogger()
 
 
@@ -21,13 +26,15 @@ class Messenger(object):
     def is_valid_channel_name(name):
         return not re.match("^[a-zA-Z0-9_\-\=\@\,\.\;]{1,64}$", name) is None
 
-    def send_to_channel(self, channel, message):
+    def send_to_channel(self, channel, message, event=''):
         """
         Sends a message to given channel.
         Returns a count of messages sent.
         """
 
         data = {'payload': message, 'channel': channel}
+        if event != '':
+            data['event'] = event
         users = self.get_users_in_channel(channel)
         return self._send_to_users(users, data)
 
@@ -54,6 +61,9 @@ class Messenger(object):
         if self.is_valid_channel_name(channel):
             self.channels.setdefault(channel, []).append(user)
 
+            # Send event to channel with users connected
+            self.on_subscribe_event(channel, 'users:subscribed')
+
             logger.debug("User %s subscribed to %s." % (user.userid, channel,))
             logger.debug("User count in %s: %d." %
                 (channel, self.get_channel_user_count(channel)))
@@ -67,6 +77,9 @@ class Messenger(object):
             # free up the memory used by empty channel index
             if not len(self.channels[channel]):
                 del self.channels[channel]
+            else:
+                # Send event to channel with users connected
+                self.on_subscribe_event(channel, 'users:unsubscribed')
 
             logger.debug("%s unsubscribed from %s." % (user.userid, channel,))
             logger.debug("User count in %s: %d." %
@@ -75,6 +88,12 @@ class Messenger(object):
             logger.debug("Channel %s not found." % (channel,))
         except ValueError:
             logger.debug("User %s not found in %s." % (user.userid, channel,))
+
+    def on_subscribe_event(self, channel, event_name):
+        users_channel = []
+        for u in self.get_users_in_channel(channel):
+            users_channel.append(u.userid)
+        self.send_to_channel(channel, json.dumps({'members': users_channel}), event_name)
 
     def unregister_user(self, user):
         channels_to_free = []

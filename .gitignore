@@ -8,3 +8,4 @@ build
 *.sublime-workspace
 docs/build
 .vagrant
+.idea
