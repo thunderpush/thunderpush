@@ -33,7 +33,7 @@ class APITestCase(AsyncHTTPTestCase):
 
     def call_api(self, method, endpoint, **kwargs):
         return self.fetch(
-            '/api/1.0.0/{}{}'.format(API_PUBLIC, endpoint),
+            '/api/1.0.0/{0}{1}'.format(API_PUBLIC, endpoint),
             method=method,
             headers={
                 'X-Thunder-Secret-Key': API_SECRET,
@@ -58,18 +58,19 @@ class APITestCase(AsyncHTTPTestCase):
         self.assertEqual(json.loads(response.body)['count'], 2)
 
     def test_check_if_user_online(self):
-        response = self.call_api('GET', '/users/{}/'.format(self.user1.userid))
+        fmt = '/users/{0}/'
+        response = self.call_api('GET', fmt.format(self.user1.userid))
         self.assertTrue(json.loads(response.body)['online'])
-        response = self.call_api('GET', '/users/{}/'.format('nonexistentuser'))
+        response = self.call_api('GET', fmt.format('nonexistentuser'))
         self.assertFalse(json.loads(response.body)['online'])
 
     def test_send_to_user(self):
-        endpoint = '/users/{}/'.format(self.user1.userid)
+        endpoint = '/users/{0}/'.format(self.user1.userid)
         body = json.dumps({'test': 1})
         response = self.call_api('POST', endpoint, body=body)
         self.assertEqual(json.loads(response.body)['count'], 1)
 
     def test_disconnect_user(self):
-        endpoint = '/users/{}/'.format(API_PUBLIC, self.user1.userid)
+        endpoint = '/users/{0}/'.format(API_PUBLIC, self.user1.userid)
         response = self.call_api('DELETE', endpoint)
         self.assertEqual(response.code, 204)
