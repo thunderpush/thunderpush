@@ -83,7 +83,7 @@ class ChannelHandler(ThunderApiHandler):
 
     @is_authenticated
     def get(self, *args, **kwargs):
-        """ Retrieves the number of users online. """
+        """ Returns ids of all the users in given channel. """
 
         messenger = kwargs['messenger']
         channel = kwargs['channel']
@@ -95,7 +95,7 @@ class ChannelHandler(ThunderApiHandler):
 
 
 class UserCountHandler(ThunderApiHandler):
-    """ Retrieves the number of users online. """
+    """ Returns the number of users online. """
 
     @is_authenticated
     def get(self, *args, **kwargs):
@@ -107,18 +107,18 @@ class UserCountHandler(ThunderApiHandler):
 class UserHandler(ThunderApiHandler):
     @is_authenticated
     def get(self, *args, **kwargs):
-        """ Retrieves the number of users online. """
+        """ Returns whether the user is online or not. """
 
         messenger = kwargs['messenger']
         user = kwargs['user']
 
         is_online = messenger.is_user_online(user)
-        self.response({"online": is_online}, 200)
+        self.response({"online": is_online})
 
     @is_authenticated
     @is_json
     def post(self, *args, **kwargs):
-        """ Sends a message to a user. """
+        """ Sends a message to the given user. """
 
         messenger = kwargs['messenger']
         user = kwargs['user']
@@ -126,11 +126,11 @@ class UserHandler(ThunderApiHandler):
         count = messenger.send_to_user(user, self.request.body)
         self.response({"count": count})
 
-        logger.debug("Message has been sent to %d users." % count)
+        logger.debug("Message has been sent to %d clients." % count)
 
     @is_authenticated
     def delete(self, *args, **kwargs):
-        """ Forces logout of a user. """
+        """ Forcibly disconnects the given user. """
 
         messenger = kwargs['messenger']
         user = kwargs['user']
@@ -139,3 +139,12 @@ class UserHandler(ThunderApiHandler):
 
         # no response
         self.set_status(204)
+
+urls = [
+    (r"/api/1\.0\.0/(?P<apikey>.+)/users/",
+        UserCountHandler),
+    (r"/api/1\.0\.0/(?P<apikey>.+)/users/(?P<user>.+)/",
+        UserHandler),
+    (r"/api/1\.0\.0/(?P<apikey>.+)/channels/(?P<channel>.+)/",
+        ChannelHandler),
+]

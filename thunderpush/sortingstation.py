@@ -9,24 +9,28 @@ class SortingStation(object):
 
     _instance = None
 
-    def __init__(self, *args, **kwargs):
-        if self._instance:
-            raise Exception("SortingStation already initialized.")
-
+    def __init__(self):
         self.messengers_by_apikey = {}
 
-        SortingStation._instance = self
+    @classmethod
+    def instance(cls):
+        if cls._instance:
+            return cls._instance
+        self = cls._instance = cls()
+        return self
 
-    @staticmethod
-    def instance():
-        return SortingStation._instance
+    def destroy(self):
+        for messanger in self.messangers_by_apikey.values():
+            messanger.destroy()
+        SortingStation._instance = None
 
     def create_messenger(self, apikey, apisecret):
         messenger = Messenger(apikey, apisecret)
-
         self.messengers_by_apikey[apikey] = messenger
+        return messenger
 
     def delete_messenger(self, messenger):
+        messenger.destroy()
         del self.messengers_by_apikey[messenger.apikey]
 
     def get_messenger_by_apikey(self, apikey):

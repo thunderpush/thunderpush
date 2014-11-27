@@ -120,3 +120,7 @@ class Messenger(object):
 
     def get_users_in_channel(self, channel):
         return self.channels.get(channel, [])
+
+    def destroy(self):
+        for userid in self.users.keys():
+            self.force_disconnect_user(userid)
