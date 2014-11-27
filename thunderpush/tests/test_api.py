@@ -50,8 +50,8 @@ class APITestCase(AsyncHTTPTestCase):
     def test_channel_user_list(self):
         response = self.call_api('GET', '/channels/test1/')
         users = json.loads(response.body)['users']
-        self.assertIn(self.user1.userid, users)
-        self.assertIn(self.user2.userid, users)
+        self.assertTrue(self.user1.userid in users)
+        self.assertTrue(self.user2.userid in users)
 
     def test_user_count(self):
         response = self.call_api('GET', '/users/')
