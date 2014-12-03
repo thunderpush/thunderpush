@@ -15,9 +15,9 @@ Example of interacting with Thunderpush API using cURL::
 
 All requests to the HTTP API must include `X-Thunder-Secret-Key` header that should contain the private API key.
 
-=================
-Avaible endpoints
-=================
+===================
+Available endpoints
+===================
 
 Sending a message to a channel
 ==============================
