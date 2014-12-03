@@ -36,7 +36,8 @@ Reference
 
     topics/server-api
 
-:doc:`topics/server-api`    
-    Learn how to use the HTTP API and see the list of all available commands.
+:doc:`topics/server-api`
+    Learn how to use the HTTP API and see the list of all the available endpoints.
+
 
 .. _section-basics:
