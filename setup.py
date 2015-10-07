@@ -5,7 +5,8 @@ install_requires = [
     'sockjs-tornado==1.0.0',
     'tornado==3.2.2',
     # 'wsgiref==0.1.2',
-    'argparse'
+    'argparse',
+    'simplejson' # simplejson is really required for py3 support to avoid encoding problems
 ]
 
 try:
