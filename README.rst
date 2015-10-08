@@ -1,4 +1,4 @@
-.. image:: http://i.imgur.com/CgGL5eU.png  
+.. image:: http://i.imgur.com/CgGL5eU.png
 ------
 
 .. image:: https://badge.fury.io/py/thunderpush.png
@@ -14,7 +14,7 @@ Install
 =======
 
 ::
-	
+
 	pip install thunderpush
 
 Usage
@@ -34,7 +34,7 @@ Usage
 	  -H HOST, --host HOST  binds server to custom address
 	  -v, --verbose         verbose mode
 	  -d, --debug           debug mode (useful for development)
-	  -V, --version         show program's version number and exit	
+	  -V, --version         show program's version number and exit
 
 JavaScript client
 =================
@@ -74,6 +74,8 @@ Hubot: `hubot-thunderpush <https://github.com/thunderpush/hubot-thunderpush>`_
 
 Ruby: `thunderpush-gem <https://github.com/welingtonsampaio/thunderpush-gem>`_
 
+.NET: `ThunderClient.Net <https://github.com/primediabroadcasting/ThunderClient.Net>`_
+
 Using the HTTP API
 ==================
 
@@ -87,7 +89,7 @@ Example of interacting with Thunderpush API using cURL::
 		http://thunder.example.com/api/1.0.0/[API key]/channels/[channel]/
 
 All requests to the HTTP API must provide *X-Thunder-Secret-Key* header that
-should contain the private API key. 
+should contain the private API key.
 
 Sending a message to a channel
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -146,11 +148,11 @@ Connecting to the server
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 ::
-	
+
 	Thunder.connect(server, apiKey, channels, options)
 
 Connects to the Thunderpush server and starts listening for incomming
-messages. 
+messages.
 
 server
   Adress of your Thunderpush server.
@@ -175,7 +177,7 @@ Listening for messages
 ^^^^^^^^^^^^^^^^^^^^^^
 
 ::
-	
+
 	Thunder.listen(handler)
 
 Registers callback function that will receive incomming messages. You can
