@@ -35,7 +35,6 @@ def is_json(f):
     """ Used to check if the body of the request is valid JSON. """
 
     def run_check(self, *args, **kwargs):
-        print(self.request.body)
         try:
             json.loads(self.request.body)
             f(self, *args, **kwargs)

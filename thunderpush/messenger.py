@@ -5,12 +5,6 @@ import re
 logger = logging.getLogger()
 
 
-def ensure_str(s):
-    if isinstance(s, bytes):
-        s = str(s, 'utf-8')
-    return s
-
-
 class Messenger(object):
     """
     Handles dispatching messages to Channels and Users
