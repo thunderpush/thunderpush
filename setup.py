@@ -5,14 +5,16 @@ install_requires = [
     'sockjs-tornado==1.0.0',
     'tornado==3.2.2',
     'argparse',
-    'simplejson' # simplejson is really required for py3 support to avoid encoding problems
+
+    # simplejson is really required for py3 support to avoid encoding problems
+    'simplejson'
 ]
 
 setup(
     name='thunderpush',
-    version='0.9.7',
+    version='1.0.0',
     author='Krzysztof Jagiello',
-    author_email='balonyo@gmail.com',
+    author_email='me@kjagiello.com',
     description='Tornado and SockJS based, complete Web push solution.',
     packages=find_packages(),
     zip_safe=False,
@@ -27,7 +29,8 @@ setup(
         ],
     },
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
