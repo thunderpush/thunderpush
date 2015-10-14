@@ -1,6 +1,7 @@
 import logging
 import re
 
+
 logger = logging.getLogger()
 
 
@@ -79,7 +80,11 @@ class Messenger(object):
     def unregister_user(self, user):
         channels_to_free = []
 
-        for name in self.channels.iterkeys():
+        names = self.channels.iterkeys() \
+            if hasattr(self.channels, 'iterkeys') \
+            else self.channels.keys()
+
+        for name in names:
             try:
                 self.channels[name].remove(user)
 

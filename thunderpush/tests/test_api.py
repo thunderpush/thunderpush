@@ -1,4 +1,8 @@
-import json
+try:
+    import simplejson as json
+except ImportError:
+    import json
+
 from tornado.testing import AsyncHTTPTestCase
 from tornado.web import Application
 from thunderpush.api import urls
