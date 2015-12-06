@@ -173,6 +173,9 @@ options
   user
 	Set it to override the client generated user id.
 
+	protocol
+	Set it to "https" if you want to use it instead of "http".
+
 Listening for messages
 ^^^^^^^^^^^^^^^^^^^^^^
 

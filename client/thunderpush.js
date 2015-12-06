@@ -8,7 +8,8 @@ var Thunder = new function() {
     this.options = {
         // verbose?
         log: false,
-        retry: true
+        retry: true,
+        protocol: 'http'
     };
 
 
@@ -102,7 +103,6 @@ var Thunder = new function() {
 
 
     this.connect = function(server, apikey, channels, options) {
-        this.server = "http://" + server + "/connect";
         this.apikey = apikey;
         this.channels = channels;
         this.reconnect_tries = 0;
@@ -112,6 +112,7 @@ var Thunder = new function() {
             this.options[attr] = options[attr];
         }
 
+        this.server = this.options.protocol + "://" + server + "/connect";
         this.user = this.options.user;
         this.makeConnection();
 
