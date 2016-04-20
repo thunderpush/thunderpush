@@ -20,7 +20,7 @@ if os.path.isfile(pidfile):
     print("Thuderpush is running, %s already exists, exiting..." % pidfile)
     sys.exit()
 
-file(pidfile, 'w').write(pid)
+file = open('pidfile', 'w')
 
 
 def run_app():
