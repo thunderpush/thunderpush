@@ -6,11 +6,21 @@ from thunderpush import settings
 from sockjs.tornado import SockJSRouter
 
 import sys
+import os
 import tornado.ioloop
 import argparse
 import logging
 
 logger = logging.getLogger()
+
+pid = str(os.getpid())
+pidfile = "/tmp/thunderpush.pid"
+
+if os.path.isfile(pidfile):
+    print("Thuderpush is running, %s already exists, exiting..." % pidfile)
+    sys.exit()
+
+file = open('pidfile', 'w')
 
 
 def run_app():
@@ -89,9 +99,14 @@ def parse_args(args):
 
 
 def main():
-    args = parse_args(sys.argv[1:])
-    update_settings(args)
-    run_app()
+    try:
+        args = parse_args(sys.argv[1:])
+        update_settings(args)
+        run_app()
+    finally:
+        os.unlink(pidfile)
+
+    
 
 if __name__ == "__main__":
     main()
