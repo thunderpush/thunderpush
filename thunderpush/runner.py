@@ -5,12 +5,36 @@ from thunderpush import settings
 
 from sockjs.tornado import SockJSRouter
 
+import os
 import sys
+import fcntl
 import tornado.ioloop
 import argparse
 import logging
 
 logger = logging.getLogger()
+
+
+class PIDFile(object):
+    def __init__(self, path):
+        self.path = path
+
+    def __enter__(self):
+        self.pidfile = open(self.path, 'w+')
+        try:
+            fcntl.flock(self.pidfile, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            self.pidfile.seek(0)
+            self.pidfile.truncate()
+            self.pidfile.write(str(os.getpid()))
+            self.pidfile.flush()
+        except IOError:
+            # PID file exists and is held by another process
+            msg = 'Process already running (PID file: {}).'.format(self.path)
+            raise SystemExit(msg)
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.pidfile.close()
+        os.remove(self.path)
 
 
 def run_app():
@@ -43,10 +67,10 @@ def run_app():
 def update_settings(args):
     args = vars(args)
 
-    for optname in ["PORT", "HOST", "VERBOSE", "DEBUG"]:
+    for optname in ["PORT", "HOST", "VERBOSE", "DEBUG", "PIDPATH"]:
         value = args.get(optname, None)
 
-        if not value is None:
+        if value is not None:
             setattr(settings, optname, value)
 
     settings.APIKEY = args['clientkey']
@@ -76,6 +100,11 @@ def parse_args(args):
                         help='debug mode (useful for development)',
                         action="store_true", dest="DEBUG")
 
+    parser.add_argument('--pid-path',
+                        default=settings.PIDPATH,
+                        help='path to the PID file',
+                        action='store', type=str, dest='PIDPATH')
+
     parser.add_argument('-V', '--version',
                         action='version', version=__version__)
 
@@ -91,7 +120,8 @@ def parse_args(args):
 def main():
     args = parse_args(sys.argv[1:])
     update_settings(args)
-    run_app()
+    with PIDFile(settings.PIDPATH):
+        run_app()
 
 if __name__ == "__main__":
     main()

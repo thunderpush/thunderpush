@@ -23,3 +23,6 @@ DEBUG = False
 
 # This sets the logging level to DEBUG.
 VERBOSE = False
+
+# Path to the PID file
+PIDPATH = '/tmp/thunderpush.pid'
