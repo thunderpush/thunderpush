@@ -17,7 +17,7 @@ pid = str(os.getpid())
 pidfile = "/tmp/thunderpush.pid"
 
 if os.path.isfile(pidfile):
-    print "Thuderpush is running, %s already exists, exiting..." % pidfile
+    print("Thuderpush is running, %s already exists, exiting..." % pidfile)
     sys.exit()
 
 file(pidfile, 'w').write(pid)
