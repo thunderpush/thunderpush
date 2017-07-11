@@ -27,9 +27,9 @@ class APITestCase(AsyncHTTPTestCase):
         )
         self.messenger.register_user(self.user1)
         self.messenger.register_user(self.user2)
-        self.messenger.subscribe_user_to_channel(self.user1, "test1")
-        self.messenger.subscribe_user_to_channel(self.user2, "test1")
-        self.messenger.subscribe_user_to_channel(self.user1, "test2")
+        self.messenger.subscribe_user_to_channel(self.user1, 'test1')
+        self.messenger.subscribe_user_to_channel(self.user2, 'test1')
+        self.messenger.subscribe_user_to_channel(self.user1, 'test2')
 
     def tearDown(self):
         super(APITestCase, self).tearDown()

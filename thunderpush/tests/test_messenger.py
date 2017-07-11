@@ -73,15 +73,16 @@ class MessengerTestCase(unittest.TestCase):
         user1 = DummyThunderSocketHandler()
 
         self.messenger.register_user(user1)
-        self.messenger.subscribe_user_to_channel(user1, "test1")
+        self.messenger.subscribe_user_to_channel(user1, 'test1')
 
-        self.assertEqual(self.messenger.get_channel_user_count("test1"), 1)
-        self.assertTrue(user1 in self.messenger.get_users_in_channel("test1"))
+        self.assertEqual(self.messenger.get_channel_user_count('test1'), 1)
+        self.assertTrue(user1 in self.messenger.get_users_in_channel('test1'))
 
         self.messenger.unregister_user(user1)
-        self.assertEqual(self.messenger.get_channel_user_count("test1"), 0)
-        self.assertFalse(user1 in self.messenger.get_users_in_channel("test1"))
-        self.assertFalse("test1" in self.messenger.channels)
+        print(self.messenger.channels)
+        self.assertEqual(self.messenger.get_channel_user_count('test1'), 0)
+        self.assertFalse(user1 in self.messenger.get_users_in_channel('test1'))
+        self.assertFalse('test1' in self.messenger.channels)
 
     def test_multiple_subscribe(self):
         # testing multiple subscribtions from same userid
@@ -91,36 +92,36 @@ class MessengerTestCase(unittest.TestCase):
         self.messenger.register_user(user1)
         self.messenger.register_user(user2)
 
-        self.messenger.subscribe_user_to_channel(user1, "test1")
-        self.messenger.subscribe_user_to_channel(user2, "test1")
+        self.messenger.subscribe_user_to_channel(user1, 'test1')
+        self.messenger.subscribe_user_to_channel(user2, 'test1')
 
-        self.assertEqual(self.messenger.get_channel_user_count("test1"), 2)
-        self.assertTrue(user1 in self.messenger.get_users_in_channel("test1"))
-        self.assertTrue(user2 in self.messenger.get_users_in_channel("test1"))
+        self.assertEqual(self.messenger.get_channel_user_count('test1'), 2)
+        self.assertTrue(user1 in self.messenger.get_users_in_channel('test1'))
+        self.assertTrue(user2 in self.messenger.get_users_in_channel('test1'))
 
         self.messenger.unregister_user(user1)
 
-        self.assertEqual(self.messenger.get_channel_user_count("test1"), 1)
-        self.assertFalse(user1 in self.messenger.get_users_in_channel("test1"))
-        self.assertTrue(user2 in self.messenger.get_users_in_channel("test1"))
+        self.assertEqual(self.messenger.get_channel_user_count('test1'), 1)
+        self.assertFalse(user1 in self.messenger.get_users_in_channel('test1'))
+        self.assertTrue(user2 in self.messenger.get_users_in_channel('test1'))
 
     def test_send_to_channel(self):
-        count = self.messenger.send_to_channel("test1", "test message")
+        count = self.messenger.send_to_channel('test1', 'test message')
         self.assertEqual(count, 0)
 
         user1 = DummyThunderSocketHandler()
 
         self.messenger.register_user(user1)
-        self.messenger.subscribe_user_to_channel(user1, "test1")
+        self.messenger.subscribe_user_to_channel(user1, 'test1')
 
-        count = self.messenger.send_to_channel("test1", "test message")
+        count = self.messenger.send_to_channel('test1', 'test message')
         self.assertEqual(count, 1)
 
     def test_send_to_user(self):
         user1 = DummyThunderSocketHandler()
 
         self.messenger.register_user(user1)
-        count = self.messenger.send_to_user(user1.userid, "test message")
+        count = self.messenger.send_to_user(user1.userid, 'test message')
 
         self.assertEqual(count, 1)
 
@@ -130,12 +131,12 @@ class MessengerTestCase(unittest.TestCase):
         userid = user2.userid = user1.userid
 
         self.messenger.register_user(user1)
-        count = self.messenger.send_to_user(userid, "test message")
+        count = self.messenger.send_to_user(userid, 'test message')
 
         self.assertEqual(count, 1)
 
         self.messenger.register_user(user2)
-        count = self.messenger.send_to_user(userid, "test message")
+        count = self.messenger.send_to_user(userid, 'test message')
 
         self.assertEqual(count, 2)
 

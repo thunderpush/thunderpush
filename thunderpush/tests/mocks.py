@@ -2,7 +2,7 @@ class DummyThunderSocketHandler(object):
     dummyid = 1
 
     def __init__(self, *args, **kwargs):
-        self.userid = "dummy_%d" % DummyThunderSocketHandler.dummyid
+        self.userid = 'dummy_%d' % DummyThunderSocketHandler.dummyid
         self.connected = True
 
         DummyThunderSocketHandler.dummyid += 1

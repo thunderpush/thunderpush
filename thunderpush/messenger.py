@@ -16,11 +16,10 @@ class Messenger(object):
         self.apisecret = apisecret
         self.users = {}
         self.channels = {}
-        self.user_count = 0
 
     @staticmethod
     def is_valid_channel_name(name):
-        return not re.match("^[a-zA-Z0-9_\-\=\@\,\.\;]{1,64}$", name) is None
+        return not re.match('^[a-zA-Z0-9_\-\=\@\,\.\;]{1,64}$', name) is None
 
     def send_to_channel(self, channel, message):
         """
@@ -55,11 +54,11 @@ class Messenger(object):
         if self.is_valid_channel_name(channel):
             self.channels.setdefault(channel, []).append(user)
 
-            logger.debug("User %s subscribed to %s." % (user.userid, channel,))
-            logger.debug("User count in %s: %d." %
-                         (channel, self.get_channel_user_count(channel)))
+            logger.debug('User %s subscribed to %s.', user.userid, channel)
+            logger.debug('User count in %s: %d.',
+                         channel, self.get_channel_user_count(channel))
         else:
-            logger.debug("Invalid channel name %s." % channel)
+            logger.debug('Invalid channel name %s.', channel)
 
     def unsubscribe_user_from_channel(self, user, channel):
         try:
@@ -69,22 +68,18 @@ class Messenger(object):
             if self.channels[channel]:
                 del self.channels[channel]
 
-            logger.debug("%s unsubscribed from %s." % (user.userid, channel,))
-            logger.debug("User count in %s: %d." %
-                         (channel, self.get_channel_user_count(channel)))
+            logger.debug('%s unsubscribed from %s.', user.userid, channel)
+            logger.debug('User count in %s: %d.',
+                         channel, self.get_channel_user_count(channel))
         except KeyError:
-            logger.debug("Channel %s not found." % (channel,))
+            logger.debug('Channel %s not found.', channel)
         except ValueError:
-            logger.debug("User %s not found in %s." % (user.userid, channel,))
+            logger.debug('User %s not found in %s.', user.userid, channel)
 
     def unregister_user(self, user):
         channels_to_free = []
 
-        names = self.channels.iterkeys() \
-            if hasattr(self.channels, 'iterkeys') \
-            else self.channels.keys()
-
-        for name in names:
+        for name in self.channels.keys():
             try:
                 self.channels[name].remove(user)
 
@@ -101,7 +96,7 @@ class Messenger(object):
 
         self.users[user.userid].remove(user)
 
-        # free up the memory used by empty user index
+        # free up the memory used by the empty user index
         if not self.users[user.userid]:
             del self.users[user.userid]
 
@@ -118,7 +113,7 @@ class Messenger(object):
         return sum(len(connections) for connections in self.users.values())
 
     def is_user_online(self, userid):
-        return bool(self.users.get(userid, 0))
+        return userid in self.users
 
     def get_channel_user_count(self, channel):
         return len(self.get_users_in_channel(channel))
