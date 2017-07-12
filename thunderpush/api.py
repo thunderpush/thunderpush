@@ -15,9 +15,9 @@ def is_authenticated(f):
     """Decorator used to check if a valid api key has been provided."""
 
     @functools.wraps(f)
-    def run_check(self, *args, apikey, **kwargs):
+    def run_check(self, *args, **kwargs):
         ss = SortingStation.instance()
-
+        apikey = kwargs.pop('apikey', None)
         apisecret = self.request.headers.get('X-Thunder-Secret-Key', None)
         messenger = ss.get_messenger_by_apikey(apikey)
 
@@ -98,7 +98,7 @@ class UserHandler(ThunderApiHandler):
 
     @is_authenticated
     @is_json
-    def post(self, *args, messenger, user):
+    def post(self, messenger, user):
         """Sends a message to the given user."""
         count = messenger.send_to_user(user, self.request.body)
         self.response({'count': count})
