@@ -33,7 +33,7 @@ class ThunderSocketHandler(SockJSConnection):
         COMMAND argument1[:argument2[:argumentX]]
         """
         try:
-            command, args = msg.split(maxsplit=1)
+            command, args = msg.split(" ", 1)
         except ValueError:
             logger.warning('Received invalid message: %s.', msg)
             return
