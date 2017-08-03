@@ -56,13 +56,15 @@ JavaScript client
 In order to use provided by Thunderpush client, you need to include following
 lines on your webpage.
 
-::
+.. code-block:: html
 
 	<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
 	<script src="thunderpush.js"></script>
 
 The only thing you have to do now is to make a connection to your Thunderpush
-server in following way::
+server in following way:
+
+.. code-block:: html
 
 	<script type="text/javascript">
 	Thunder.connect("thunder.example.com", "apikey", ["testchannel"], {log: true});
@@ -161,7 +163,7 @@ JavaScript client API
 Connecting to the server
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-::
+.. code-block:: javascript
 
 	Thunder.connect(server, apiKey, channels, options)
 
@@ -193,7 +195,7 @@ options
 Listening for messages
 ^^^^^^^^^^^^^^^^^^^^^^
 
-::
+.. code-block:: javascript
 
 	Thunder.listen(handler)
 
