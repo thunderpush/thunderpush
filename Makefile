@@ -15,11 +15,9 @@ travis-docker-login:
 
 .PHONY: travis-docker-push
 travis-docker-push:
-	if [ $$TRAVIS_BRANCH = "master" ]; then \
-		docker tag $(TAG_FINAL) $(IMAGE_NAME):master; \
-	fi
+	docker tag $(IMAGE_NAME):latest $(IMAGE_NAME); \
 	if [ -nz $$TRAVIS_TAG ]; then \
-		docker tag $(TAG_FINAL) $(IMAGE_NAME):$(TRAVIS_TAG); \
+		docker tag $(IMAGE_NAME):$(TRAVIS_TAG) $(IMAGE_NAME);\
 	fi
 	docker tag \
 		$(TAG_FINAL) \

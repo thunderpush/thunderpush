@@ -4,18 +4,23 @@ services:
 env:
   global:
     - COMMIT=${TRAVIS_COMMIT::7}
+    - secure: SXAmFoBoppiQKTp4SqDlz1EG3NXYUWnR8/7aRmiLZfkWKyrlsh6+wUr3AVIb8p6pp9ST122vuhGJdTEMp/r4Rvng0Wk8fWI4ePlHv9nj2XXQw09ShgEjht6uwC2WYstb1f1HAotFx7gaXC9damx66dyiKwWWyQ9ufOLbhwwGI9w=
 python:
-  - "2.6"
-  - "2.7"
-  - "3.4"
-  - "3.5"
-  - "3.6"
+  - '2.6'
+  - '2.7'
+  - '3.4'
+  - '3.5'
+  - '3.6'
 install:
   - pip install .
 script: python setup.py test
-deploy:
-  skip_cleanup: true
-  provider: script
-  script: make travis-docker-push
-  on:
-    branch: master
+jobs:
+  include:
+  - stage: push docker image
+    script: skip
+    deploy:
+      skip_cleanup: true
+      provider: script
+      script: curl -X POST https://cloud.docker.com/api/build/v1/source/5db4c6fd-a582-4dad-bbdd-ac1770e87d9c/trigger/${DOCKER_CLOUD_TRIGGER}/call/
+      on:
+        branch: master
