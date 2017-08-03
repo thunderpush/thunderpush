@@ -17,6 +17,16 @@ Install
 
 	pip install thunderpush
 
+Using Docker
+============
+
+::
+
+        docker run -d -p 8080:8080 \
+            -e PUBLIC_KEY=public \
+            -e PRIVATE_KEY=secret \
+            kjagiello/thunderpush
+
 Usage
 =====
 
