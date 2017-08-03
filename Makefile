@@ -18,7 +18,7 @@ travis-docker-push:
 	if [ $$TRAVIS_BRANCH = "master" ]; then \
 		docker tag $(TAG_FINAL) $(IMAGE_NAME):master; \
 	fi
-	if [ -n $$TRAVIS_TAG ]; then \
+	if [ -nz $$TRAVIS_TAG ]; then \
 		docker tag $(TAG_FINAL) $(IMAGE_NAME):$(TRAVIS_TAG); \
 	fi
 	docker tag \
