@@ -10,6 +10,10 @@ install_requires = [
     'simplejson'
 ]
 
+tests_require = [
+    'mock==2.0.0'
+]
+
 setup(
     name='thunderpush',
     version='1.0.1',
@@ -19,6 +23,7 @@ setup(
     packages=find_packages(),
     zip_safe=False,
     install_requires=install_requires,
+    tests_require=tests_require,
     license='BSD',
     include_package_data=True,
     url='https://github.com/thunderpush/thunderpush',
