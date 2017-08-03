@@ -8,3 +8,5 @@ build
 *.sublime-workspace
 docs/build
 .vagrant
+.tox
+dist/
