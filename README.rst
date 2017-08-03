@@ -1,11 +1,15 @@
 .. image:: http://i.imgur.com/CgGL5eU.png
 ------
 
-.. image:: https://badge.fury.io/py/thunderpush.png
-	:target: http://badge.fury.io/py/thunderpush
+.. image:: https://img.shields.io/pypi/v/thunderpush.svg
+	:target: https://pypi.python.org/pypi/thunderpush
 
-.. image:: https://secure.travis-ci.org/thunderpush/thunderpush.png?branch=master
+.. image:: https://img.shields.io/travis/thunderpush/thunderpush/master.svg
 	:target: http://travis-ci.org/thunderpush/thunderpush
+
+.. image:: https://img.shields.io/docker/pulls/kjagiello/thunderpush.svg
+	:target: https://hub.docker.com/r/kjagiello/thunderpush/
+
 
 Thunderpush is a Tornado and SockJS based push service. It provides
 a Beaconpush (beaconpush.com) inspired HTTP API and client.
