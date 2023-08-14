@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 install_requires = [
     'sockjs-tornado==1.0.0',
-    'tornado==3.2.2',
+    'tornado==6.3.3',
     'argparse',
 
     # simplejson is really required for py3 support to avoid encoding problems
